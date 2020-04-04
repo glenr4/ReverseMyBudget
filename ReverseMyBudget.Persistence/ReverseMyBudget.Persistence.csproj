@@ -5,11 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+    <ProjectReference Include="..\ReverseMyBudget.Domain\ReverseMyBudget.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ReverseMyBudget.Domain\ReverseMyBudget.Domain.csproj" />
-    <ProjectReference Include="..\ReverseMyBudget.Persistence\ReverseMyBudget.Persistence.csproj" />
-  </ItemGroup>
 </Project>

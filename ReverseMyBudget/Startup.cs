@@ -1,12 +1,16 @@
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using ReverseMyBudget.Application;
 using ReverseMyBudget.Data;
 using ReverseMyBudget.Models;
+using ReverseMyBudget.Persistence;
 using ReverseMyBudget.Persistence.Sql;
 using Serilog;
 
@@ -33,7 +37,8 @@ namespace ReverseMyBudget
             // https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/providers?tabs=dotnet-core-cli
             services.AddDbContext<ReverseMyBudgetDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly("ReverseMyBudget")));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationUserDbContext>();
@@ -54,6 +59,14 @@ namespace ReverseMyBudget
             });
 
             services.AddOidcUserProvider();
+
+            // Application Services
+            services.AddMediatR(typeof(ImportTransactionsRequest).Assembly);
+
+            services.TryAddSingleton<ITransactionConverter, CsvToTransactionConverter>();
+
+            // Scoped
+            services.TryAddScoped<ITransactionStore, SqlTransactionStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

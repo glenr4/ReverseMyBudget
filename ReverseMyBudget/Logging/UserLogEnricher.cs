@@ -1,4 +1,5 @@
-﻿using Serilog.Core;
+﻿using ReverseMyBudget.Domain;
+using Serilog.Core;
 using Serilog.Events;
 
 namespace ReverseMyBudget

@@ -6,7 +6,12 @@ namespace ReverseMyBudget.Domain
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public DateTime DateUtc { get; set; }
+
+        /// <summary>
+        /// Imported data is assumed to be in the user's timezone
+        /// </summary>
+        public DateTime DateLocal { get; set; }
+
         public decimal Amount { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
