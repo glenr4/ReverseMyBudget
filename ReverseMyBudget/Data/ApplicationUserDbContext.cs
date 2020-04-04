@@ -6,9 +6,12 @@ using ReverseMyBudget.Models;
 
 namespace ReverseMyBudget.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    /// <summary>
+    /// This is for ApplicationUser Authentication only
+    /// </summary>
+    public class ApplicationUserDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(
+        public ApplicationUserDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {

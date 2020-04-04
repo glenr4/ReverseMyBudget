@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReverseMyBudget.Data;
 using ReverseMyBudget.Models;
+using ReverseMyBudget.Persistence.Sql;
 using Serilog;
 
 namespace ReverseMyBudget
@@ -25,15 +26,20 @@ namespace ReverseMyBudget
         {
             services.AddSingleton<ILogger>(Log.Logger);
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<ApplicationUserDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+            // https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/providers?tabs=dotnet-core-cli
+            services.AddDbContext<ReverseMyBudgetDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationUserDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<ApplicationUser, ApplicationUserDbContext>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
