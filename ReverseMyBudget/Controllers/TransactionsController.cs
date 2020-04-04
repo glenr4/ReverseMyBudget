@@ -24,7 +24,7 @@ namespace ReverseMyBudget.Controllers
         }
 
         /// <summary>
-        /// Removed AllowAnonymous after testing
+        /// Remove AllowAnonymous after testing
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
