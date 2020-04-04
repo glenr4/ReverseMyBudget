@@ -3,13 +3,13 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ReverseMyBudget
 {
-    public static class ServicesExtensions
+    public static class UserServicesExtensions
     {
         public static void AddOidcUserProvider(this IServiceCollection services)
         {
             services.AddHttpContextAccessor();
 
-            services.TryAddSingleton<IUserProvider, OidcUserProvider>();
+            services.TryAddScoped<IUserProvider, OidcUserProvider>();
         }
     }
 }
