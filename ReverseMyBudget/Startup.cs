@@ -47,6 +47,8 @@ namespace ReverseMyBudget
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddOidcUserProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
