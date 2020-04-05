@@ -67,7 +67,7 @@ namespace ReverseMyBudget
             // Application Services
             services.AddMediatR(typeof(ImportTransactionsRequest).Assembly);
 
-            services.TryAddSingleton<ITransactionConverter, CsvToTransactionConverter>();
+            services.TryAddSingleton<ITransactionConverter, NabCsvToTransactionConverter>();
 
             // Scoped
             services.TryAddScoped<ITransactionStore, SqlTransactionStore>();
