@@ -24,11 +24,16 @@ namespace ReverseMyBudget.Controllers
             return _accountStore.GetUsersAccountsAsync(_userProvider.UserId);
         }
 
+        /// <summary>
+        /// TODO: Remove AllowAnonymous and enable UserId update when there is a UI for creating accounts
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         public Task Add(Account account)
         {
-            account.UserId = _userProvider.UserId;
+            //account.UserId = _userProvider.UserId;
 
             return _accountStore.AddAsync(account);
         }

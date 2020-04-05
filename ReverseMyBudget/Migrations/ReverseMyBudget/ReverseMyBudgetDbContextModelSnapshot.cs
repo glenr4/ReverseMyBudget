@@ -42,6 +42,7 @@ namespace ReverseMyBudget.Migrations.ReverseMyBudget
             modelBuilder.Entity("ReverseMyBudget.Domain.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AccountId")
@@ -76,6 +77,8 @@ namespace ReverseMyBudget.Migrations.ReverseMyBudget
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountId");
+
                     b.HasIndex("UserId", "DateLocal", "Amount", "Description")
                         .IsUnique()
                         .HasFilter("[Description] IS NOT NULL");
@@ -87,7 +90,7 @@ namespace ReverseMyBudget.Migrations.ReverseMyBudget
                 {
                     b.HasOne("ReverseMyBudget.Domain.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

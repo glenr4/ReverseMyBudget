@@ -31,7 +31,7 @@ namespace ReverseMyBudget.Persistence.Sql
 
                     b.HasOne(x => x.Account)
                     .WithMany()
-                    .HasForeignKey(x => x.Id);
+                    .HasForeignKey(x => x.AccountId);
                 });
         }
     }

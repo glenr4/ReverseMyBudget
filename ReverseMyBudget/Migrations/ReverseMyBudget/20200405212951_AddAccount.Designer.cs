@@ -10,7 +10,7 @@ using ReverseMyBudget.Persistence.Sql;
 namespace ReverseMyBudget.Migrations.ReverseMyBudget
 {
     [DbContext(typeof(ReverseMyBudgetDbContext))]
-    [Migration("20200405204046_AddAccount")]
+    [Migration("20200405212951_AddAccount")]
     partial class AddAccount
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,7 @@ namespace ReverseMyBudget.Migrations.ReverseMyBudget
             modelBuilder.Entity("ReverseMyBudget.Domain.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AccountId")
@@ -78,6 +79,8 @@ namespace ReverseMyBudget.Migrations.ReverseMyBudget
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountId");
+
                     b.HasIndex("UserId", "DateLocal", "Amount", "Description")
                         .IsUnique()
                         .HasFilter("[Description] IS NOT NULL");
@@ -89,7 +92,7 @@ namespace ReverseMyBudget.Migrations.ReverseMyBudget
                 {
                     b.HasOne("ReverseMyBudget.Domain.Account", "Account")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

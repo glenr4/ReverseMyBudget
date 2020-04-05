@@ -21,10 +21,15 @@ namespace ReverseMyBudget.Migrations.ReverseMyBudget
                     table.PrimaryKey("PK_Account", x => x.Id);
                 });
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Transaction_Account_Id",
+            migrationBuilder.CreateIndex(
+                name: "IX_Transaction_AccountId",
                 table: "Transaction",
-                column: "Id",
+                column: "AccountId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Transaction_Account_AccountId",
+                table: "Transaction",
+                column: "AccountId",
                 principalTable: "Account",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
@@ -33,11 +38,15 @@ namespace ReverseMyBudget.Migrations.ReverseMyBudget
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Transaction_Account_Id",
+                name: "FK_Transaction_Account_AccountId",
                 table: "Transaction");
 
             migrationBuilder.DropTable(
                 name: "Account");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Transaction_AccountId",
+                table: "Transaction");
         }
     }
 }

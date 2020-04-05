@@ -15,13 +15,9 @@ export class Upload extends Component {
       uploading: false,
       uploadProgress: {},
       successfullUploaded: false,
-      selectedAccount: "",
+      selectedAccountId: "",
       accounts: [],
     };
-  }
-
-  async componentDidMount() {
-    this.loadAccounts();
   }
 
   render() {
@@ -63,7 +59,7 @@ export class Upload extends Component {
   };
 
   uploadFiles = async () => {
-    if (!this.state.selectedAccount) {
+    if (!this.state.selectedAccountId) {
       alert("Please select an account first");
       return;
     }
@@ -122,10 +118,7 @@ export class Upload extends Component {
 
       const token = await authService.getAccessToken();
 
-      req.open(
-        "POST",
-        "transactions/import/11111819-6234-4083-8c8f-06083432126d"
-      );
+      req.open("POST", `transactions/import/${this.state.selectedAccountId}`);
       req.setRequestHeader("Authorization", `Bearer ${token}`);
       req.send(formData);
     });
@@ -174,34 +167,7 @@ export class Upload extends Component {
     }
   };
 
-  accountSelected = (account) => {
-    this.setState({ selectedAccount: account });
-  };
-
-  loadAccounts = async () => {
-    const token = await authService.getAccessToken();
-
-    fetch("accounts", {
-      headers: !token ? {} : { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        let items = data.map((item) => {
-          return { value: item, display: item };
-        });
-        this.setState({
-          accounts: [
-            {
-              value: "",
-              display: "(Select an account)",
-            },
-          ].concat(items),
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  accountSelected = (id) => {
+    this.setState({ selectedAccountId: id });
   };
 }
