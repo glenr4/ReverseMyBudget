@@ -1,4 +1,6 @@
-﻿// Initial creation
+﻿// Run these scripts from the ReverseMyBudget project folder
+
+// Initial creation
 dotnet ef migrations add InitialCreate --context ReverseMyBudgetDbContext --output-dir Migrations/ReverseMyBudget
 dotnet ef migrations add InitialCreate --context ApplicationUserDbContext --output-dir Migrations/ApplicationUserDbContext
 

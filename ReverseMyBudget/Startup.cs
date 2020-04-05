@@ -49,7 +49,11 @@ namespace ReverseMyBudget
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<LoggingExceptionFilter>();
+            });
+
             services.AddRazorPages();
 
             // In production, the React files will be served from this directory
