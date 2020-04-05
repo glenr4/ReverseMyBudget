@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ReverseMyBudget.Domain;
 using System;
 using System.Linq;
 
@@ -26,7 +27,8 @@ namespace ReverseMyBudget
             }
             catch (Exception ex)
             {
-                throw new UnauthorizedAccessException("Missing User Identifier Claim", ex);
+                // Not all requests are for protected resources
+                return Guid.Empty;
             }
         }
     }

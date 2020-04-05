@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ReverseMyBudget.Domain;
 using Serilog;
 using Serilog.Context;
 using Serilog.Events;

@@ -10,9 +10,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseMyBudget.Persistence.Sql", "ReverseMyBudget.Persistence.Sql\ReverseMyBudget.Persistence.Sql.csproj", "{7EA40844-EA77-4277-B7C1-4EC513EB6831}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseMyBudget.Persistence.Sql", "ReverseMyBudget.Persistence.Sql\ReverseMyBudget.Persistence.Sql.csproj", "{7EA40844-EA77-4277-B7C1-4EC513EB6831}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseMyBudget.Domain", "ReverseMyBudget.Domain\ReverseMyBudget.Domain.csproj", "{4828B6B6-9917-47F2-BD6A-069CABD105CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReverseMyBudget.Domain", "ReverseMyBudget.Domain\ReverseMyBudget.Domain.csproj", "{4828B6B6-9917-47F2-BD6A-069CABD105CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseMyBudget.Application", "ReverseMyBudget.Application\ReverseMyBudget.Application.csproj", "{1E94798B-DA65-4CAA-9F00-D8DA77A65C1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseMyBudget.Persistence", "ReverseMyBudget.Persistence\ReverseMyBudget.Persistence.csproj", "{F4377C08-DEE5-40DC-B3DA-8F91D2232E99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseMyBudget.Application.Tests", "Tests\ReverseMyBudget.Application.Tests\ReverseMyBudget.Application.Tests.csproj", "{7E0C6BF9-9838-45A2-B5BE-F1DA3CEFA56E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseMyBudget.Persistence.Sql.Tests", "Tests\ReverseMyBudget.Persistence.Sql.Tests\ReverseMyBudget.Persistence.Sql.Tests.csproj", "{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +40,22 @@ Global
 		{4828B6B6-9917-47F2-BD6A-069CABD105CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4828B6B6-9917-47F2-BD6A-069CABD105CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4828B6B6-9917-47F2-BD6A-069CABD105CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E94798B-DA65-4CAA-9F00-D8DA77A65C1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E94798B-DA65-4CAA-9F00-D8DA77A65C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E94798B-DA65-4CAA-9F00-D8DA77A65C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E94798B-DA65-4CAA-9F00-D8DA77A65C1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4377C08-DEE5-40DC-B3DA-8F91D2232E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4377C08-DEE5-40DC-B3DA-8F91D2232E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4377C08-DEE5-40DC-B3DA-8F91D2232E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4377C08-DEE5-40DC-B3DA-8F91D2232E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E0C6BF9-9838-45A2-B5BE-F1DA3CEFA56E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E0C6BF9-9838-45A2-B5BE-F1DA3CEFA56E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E0C6BF9-9838-45A2-B5BE-F1DA3CEFA56E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E0C6BF9-9838-45A2-B5BE-F1DA3CEFA56E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

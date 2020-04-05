@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace ReverseMyBudget
+namespace ReverseMyBudget.Domain
 {
     public interface IUserProvider
     {
-        public Guid UserId { get; }
+        Guid UserId { get; }
     }
 }
