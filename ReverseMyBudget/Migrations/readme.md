@@ -5,7 +5,9 @@ dotnet ef migrations add InitialCreate --context ReverseMyBudgetDbContext --outp
 dotnet ef migrations add InitialCreate --context ApplicationUserDbContext --output-dir Migrations/ApplicationUserDbContext
 
 // Update
-Same as above but don't need to specify the output directory
+dotnet ef migrations add NewCommit --context ReverseMyBudgetDbContext
+dotnet ef migrations add NewCommit --context ApplicationUserDbContext
 
 // Run migrations
-dotnet ef database update --context <DbContext Name>
+dotnet ef database update --context ReverseMyBudgetDbContext
+dotnet ef database update --context ApplicationUserDbContext
