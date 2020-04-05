@@ -23,12 +23,6 @@ namespace ReverseMyBudget.Controllers
             _mediator = mediator;
         }
 
-        /// <summary>
-        /// Remove AllowAnonymous after testing
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        [AllowAnonymous]
         [HttpPost("import/{accountId}")]
         public async Task<IActionResult> Create(Guid accountId, IFormFile file)
         {
