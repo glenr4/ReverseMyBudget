@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace ReverseMyBudget.Application
 {
-    public class ImportTransactionsRequest : IRequest
+    public class ImportTransactionsRequest : IRequest<int>
     {
         public Stream File { get; set; }
         public Guid AccountId { get; set; }
         public string FileName { get; set; }
 
-        public class Handler : IRequestHandler<ImportTransactionsRequest, Unit>
+        public class Handler : IRequestHandler<ImportTransactionsRequest, int>
         {
             private readonly ITransactionStore _transactionStore;
             private readonly ITransactionConverter _transactionConverter;
@@ -35,7 +35,7 @@ namespace ReverseMyBudget.Application
                 _logger = logger;
             }
 
-            public async Task<Unit> Handle(ImportTransactionsRequest request, CancellationToken cancellationToken)
+            public async Task<int> Handle(ImportTransactionsRequest request, CancellationToken cancellationToken)
             {
                 _logger.Information("{@request}", request);
 
@@ -59,7 +59,7 @@ namespace ReverseMyBudget.Application
 
                 await _transactionStore.AddAsync(transactions);
 
-                return Unit.Value;
+                return lineCount;
             }
         }
     }
