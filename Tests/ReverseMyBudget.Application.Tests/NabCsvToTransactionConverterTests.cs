@@ -1,15 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
-using RandomDataGenerator.FieldOptions;
-using RandomDataGenerator.Randomizers;
-using ReverseMyBudget.Domain;
-using ReverseMyBudget.Persistence;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ReverseMyBudget.Application.Tests
@@ -220,7 +213,5 @@ namespace ReverseMyBudget.Application.Tests
             new object[] {"18 Mar 20,456.00,'000000000000',,TRANSFER CREDIT,ONLINE N0854575810 Weekly savings G and G,456.70"},
             new object[] {"16 Mar 20,-1000.00,'000000000000',,TRANSFER DEBIT,INTERNET TRANSFER OL00027173,5678.70"},
         };
-
-        // Also write tests for incorrect data types
     }
 }

@@ -1,7 +1,6 @@
+using AutoFixture;
 using FluentAssertions;
 using Moq;
-using RandomDataGenerator.FieldOptions;
-using RandomDataGenerator.Randomizers;
 using ReverseMyBudget.Domain;
 using ReverseMyBudget.Persistence;
 using Serilog;
@@ -21,7 +20,7 @@ namespace ReverseMyBudget.Application.Tests
         private readonly Mock<IUserProvider> _userProvider;
         private readonly Mock<ILogger> _logger;
         private readonly Guid _userId;
-        private readonly IRandomizerString _randomText;
+        private readonly Fixture _fixture;
 
         public ImportTransactionsRequestHandlerTests()
         {
@@ -33,7 +32,7 @@ namespace ReverseMyBudget.Application.Tests
             _userId = Guid.NewGuid();
             _userProvider.Setup(u => u.UserId).Returns(_userId);
 
-            _randomText = RandomizerFactory.GetRandomizer(new FieldOptionsText());
+            _fixture = new Fixture();
         }
 
         [Fact]
@@ -49,7 +48,7 @@ namespace ReverseMyBudget.Application.Tests
             {
                 File = file,
                 AccountId = accountId,
-                FileName = _randomText.Generate()
+                FileName = _fixture.Create<string>()
             };
 
             _transactionConverter.Setup(t => t.Convert(
@@ -83,7 +82,7 @@ namespace ReverseMyBudget.Application.Tests
             {
                 File = file,
                 AccountId = accountId,
-                FileName = _randomText.Generate()
+                FileName = _fixture.Create<string>()
             };
 
             var expectedTransaction = new Transaction();
@@ -145,7 +144,7 @@ namespace ReverseMyBudget.Application.Tests
 
             for (int i = 0; i < length; i++)
             {
-                list.Add(_randomText.Generate());
+                list.Add(_fixture.Create<string>());
             }
 
             return list.ToArray();
