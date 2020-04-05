@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseMyBudget.Persistence
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseMyBudget.Application.Tests", "Tests\ReverseMyBudget.Application.Tests\ReverseMyBudget.Application.Tests.csproj", "{7E0C6BF9-9838-45A2-B5BE-F1DA3CEFA56E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseMyBudget.Persistence.Sql.Tests", "Tests\ReverseMyBudget.Persistence.Sql.Tests\ReverseMyBudget.Persistence.Sql.Tests.csproj", "{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{7E0C6BF9-9838-45A2-B5BE-F1DA3CEFA56E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E0C6BF9-9838-45A2-B5BE-F1DA3CEFA56E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E0C6BF9-9838-45A2-B5BE-F1DA3CEFA56E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C4CDB54-BE2B-49EE-96B4-3A7C9E494F07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
