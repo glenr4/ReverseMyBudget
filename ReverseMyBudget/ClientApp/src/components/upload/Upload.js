@@ -2,32 +2,77 @@
 import React, { Component } from "react";
 import Dropzone from "./Dropzone";
 import Progress from "./Progress";
+import { Dropdown } from "../shared/Dropdown";
 import "./Upload.css";
 import authService from "../api-authorization/AuthorizeService";
 
-class Upload extends Component {
+export class Upload extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       files: [],
       uploading: false,
       uploadProgress: {},
       successfullUploaded: false,
+      selectedAccount: "",
+      accounts: [],
     };
-
-    this.onFilesAdded = this.onFilesAdded.bind(this);
-    this.uploadFiles = this.uploadFiles.bind(this);
-    this.sendRequest = this.sendRequest.bind(this);
-    this.renderActions = this.renderActions.bind(this);
   }
 
-  onFilesAdded(files) {
+  async componentDidMount() {
+    this.loadAccounts();
+  }
+
+  render() {
+    return (
+      <div className="Card">
+        <Dropdown itemsUrl={"accounts"} itemSelected={this.accountSelected} />
+        <div className="Upload">
+          <span className="Title">Upload Files</span>
+          <div className="Content">
+            <div>
+              <Dropzone
+                onFilesAdded={this.onFilesAdded}
+                disabled={
+                  this.state.uploading || this.state.successfullUploaded
+                }
+              />
+            </div>
+            <div className="Files">
+              {this.state.files.map((file) => {
+                return (
+                  <div key={file.name} className="Row">
+                    <span className="Filename">{file.name}</span>
+                    {this.renderProgress(file)}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="Actions">{this.renderActions()}</div>
+        </div>
+      </div>
+    );
+  }
+
+  onFilesAdded = (files) => {
     this.setState((prevState) => ({
       files: prevState.files.concat(files),
     }));
-  }
+  };
 
-  async uploadFiles() {
+  uploadFiles = async () => {
+    if (!this.state.selectedAccount) {
+      alert("Please select an account first");
+      return;
+    }
+
+    if (this.state.files.length === 0) {
+      alert("Please select a file first");
+      return;
+    }
+
     this.setState({ uploadProgress: {}, uploading: true });
     const promises = [];
     this.state.files.forEach((file) => {
@@ -41,9 +86,9 @@ class Upload extends Component {
       // Not Production ready! Do some error handling here instead...
       this.setState({ successfullUploaded: true, uploading: false });
     }
-  }
+  };
 
-  sendRequest(file) {
+  sendRequest = (file) => {
     return new Promise(async (resolve, reject) => {
       const req = new XMLHttpRequest();
 
@@ -84,9 +129,9 @@ class Upload extends Component {
       req.setRequestHeader("Authorization", `Bearer ${token}`);
       req.send(formData);
     });
-  }
+  };
 
-  renderProgress(file) {
+  renderProgress = (file) => {
     const uploadProgress = this.state.uploadProgress[file.name];
     if (this.state.uploading || this.state.successfullUploaded) {
       return (
@@ -104,15 +149,15 @@ class Upload extends Component {
         </div>
       );
     }
-  }
+  };
 
-  renderActions() {
+  renderActions = () => {
     if (this.state.successfullUploaded) {
       return (
         <button
-          onClick={() =>
-            this.setState({ files: [], successfullUploaded: false })
-          }
+          onClick={() => {
+            this.setState({ files: [], successfullUploaded: false });
+          }}
         >
           Clear
         </button>
@@ -127,38 +172,36 @@ class Upload extends Component {
         </button>
       );
     }
-  }
+  };
 
-  render() {
-    return (
-      <div className="Card">
-        <div className="Upload">
-          <span className="Title">Upload Files</span>
-          <div className="Content">
-            <div>
-              <Dropzone
-                onFilesAdded={this.onFilesAdded}
-                disabled={
-                  this.state.uploading || this.state.successfullUploaded
-                }
-              />
-            </div>
-            <div className="Files">
-              {this.state.files.map((file) => {
-                return (
-                  <div key={file.name} className="Row">
-                    <span className="Filename">{file.name}</span>
-                    {this.renderProgress(file)}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="Actions">{this.renderActions()}</div>
-        </div>
-      </div>
-    );
-  }
+  accountSelected = (account) => {
+    this.setState({ selectedAccount: account });
+  };
+
+  loadAccounts = async () => {
+    const token = await authService.getAccessToken();
+
+    fetch("accounts", {
+      headers: !token ? {} : { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        let items = data.map((item) => {
+          return { value: item, display: item };
+        });
+        this.setState({
+          accounts: [
+            {
+              value: "",
+              display: "(Select an account)",
+            },
+          ].concat(items),
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 }
-
-export default Upload;
