@@ -23,9 +23,9 @@ export class Upload extends Component {
   render() {
     return (
       <div className="Card">
-        <Dropdown itemsUrl={"accounts"} itemSelected={this.accountSelected} />
         <div className="Upload">
           <span className="Title">Upload Files</span>
+          <Dropdown itemsUrl={"accounts"} itemSelected={this.accountSelected} />
           <div className="Content">
             <div>
               <Dropzone
@@ -76,11 +76,14 @@ export class Upload extends Component {
     });
     try {
       await Promise.all(promises);
-
+      debugger;
+      // TODO: this always returns successful even when the server returns an error
       this.setState({ successfullUploaded: true, uploading: false });
     } catch (e) {
       // Not Production ready! Do some error handling here instead...
-      this.setState({ successfullUploaded: true, uploading: false });
+      debugger;
+      // This never gets hit
+      this.setState({ successfullUploaded: false, uploading: false });
     }
   };
 
@@ -103,6 +106,9 @@ export class Upload extends Component {
         const copy = { ...this.state.uploadProgress };
         copy[file.name] = { state: "done", percentage: 100 };
         this.setState({ uploadProgress: copy });
+
+        debugger;
+
         resolve(req.response);
       });
 
@@ -110,6 +116,8 @@ export class Upload extends Component {
         const copy = { ...this.state.uploadProgress };
         copy[file.name] = { state: "error", percentage: 0 };
         this.setState({ uploadProgress: copy });
+
+        debugger;
         reject(req.response);
       });
 
@@ -146,6 +154,8 @@ export class Upload extends Component {
 
   renderActions = () => {
     if (this.state.successfullUploaded) {
+      // TODO: Redirect to Transactions page
+      alert("Transactions imported successfully");
       return (
         <button
           onClick={() => {
