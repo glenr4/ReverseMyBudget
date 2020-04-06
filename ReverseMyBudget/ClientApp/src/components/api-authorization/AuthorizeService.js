@@ -5,7 +5,6 @@ export class AuthorizeService {
   _callbacks = [];
   _nextSubscriptionId = 0;
   _user = null;
-  _isAuthenticated = false;
 
   // By default pop ups are disabled because they don't work properly on Edge.
   // If you want to enable pop up authentication simply set this flag to false.
@@ -13,25 +12,30 @@ export class AuthorizeService {
 
   async isAuthenticated() {
     const user = await this.getUser();
-    return !!user;
+
+    return user && user.profile && !user.expired;
   }
 
   async getUser() {
+    await this.ensureUserManagerInitialized();
+    const user = await this.userManager.getUser();
+    return user;
+  }
+
+  async getUserProfile() {
     if (this._user && this._user.profile) {
       return this._user.profile;
     }
 
-    await this.ensureUserManagerInitialized();
-    const user = await this.userManager.getUser();
-    return user && user.profile;
-  }
-
+    const user = await this.getUser();
   async getAccessToken() {
     await this.ensureUserManagerInitialized();
     const user = await this.userManager.getUser();
     return user && user.access_token;
   }
 
+    return user && user.profile;
+  }
   // We try to authenticate the user in three different ways:
   // 1) We try to see if we can authenticate the user silently. This happens
   //    when the user is already logged in on the IdP and is done using a hidden iframe
@@ -139,7 +143,6 @@ export class AuthorizeService {
 
   updateState(user) {
     this._user = user;
-    this._isAuthenticated = !!this._user;
     this.notifySubscribers();
   }
 
