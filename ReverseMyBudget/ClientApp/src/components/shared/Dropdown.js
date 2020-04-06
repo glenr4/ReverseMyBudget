@@ -1,6 +1,7 @@
 // This component is from: https://www.carlrippon.com/react-drop-down-data-binding/
 import React, { Component } from "react";
 import authService from "../api-authorization/AuthorizeService";
+import "./Dropdown.css";
 
 export class Dropdown extends Component {
   state = {
@@ -39,22 +40,27 @@ export class Dropdown extends Component {
   render() {
     return (
       <div>
-        <select
-          value={this.state.selectedItem}
-          onChange={(e) => {
-            this.props.itemSelected(e.target.value);
+        <label className="Label">
+          Select an account:
+          <span> </span>
+          <select
+            className="Items"
+            value={this.state.selectedItem}
+            onChange={(e) => {
+              this.props.itemSelected(e.target.value);
 
-            this.setState({
-              selectedItem: e.target.value,
-            });
-          }}
-        >
-          {this.state.items.map((item) => (
-            <option key={item.value} value={item.value}>
-              {item.display}
-            </option>
-          ))}
-        </select>
+              this.setState({
+                selectedItem: e.target.value,
+              });
+            }}
+          >
+            {this.state.items.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.display}
+              </option>
+            ))}
+          </select>
+        </label>
         <div
           style={{
             color: "red",
