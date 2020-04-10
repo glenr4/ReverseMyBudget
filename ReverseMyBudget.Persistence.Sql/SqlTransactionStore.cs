@@ -1,5 +1,8 @@
-﻿using ReverseMyBudget.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using ReverseMyBudget.Domain;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReverseMyBudget.Persistence.Sql
@@ -11,6 +14,11 @@ namespace ReverseMyBudget.Persistence.Sql
         public SqlTransactionStore(ReverseMyBudgetDbContext ctx)
         {
             _ctx = ctx;
+        }
+
+        public Task<List<Transaction>> Get(Guid userId)
+        {
+            return _ctx.Transaction.Where(t => t.UserId == userId).ToListAsync();
         }
 
         public Task AddAsync(IEnumerable<Transaction> transactions)
