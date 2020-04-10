@@ -20,5 +20,6 @@ namespace ReverseMyBudget.Domain
         public int ImportOrder { get; set; }
         public Guid? CategoryId { get; set; }
         public bool IsDuplicate { get; set; }
+        public virtual Account Account { get; set; }
     }
 }

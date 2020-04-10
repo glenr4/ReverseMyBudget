@@ -9,6 +9,7 @@ namespace ReverseMyBudget.Persistence.Sql
     public class ReverseMyBudgetDbContext : DbContext
     {
         public DbSet<Transaction> Transaction { get; set; }
+        public DbSet<Account> Account { get; set; }
 
         public ReverseMyBudgetDbContext(DbContextOptions<ReverseMyBudgetDbContext> options)
             : base(options)
@@ -19,6 +20,7 @@ namespace ReverseMyBudget.Persistence.Sql
         {
             base.OnModelCreating(modelBuilder);
 
+            // Should we use composite PK/FK? ie Id and UserId?
             modelBuilder
                 .Entity<Transaction>(b =>
                 {
@@ -26,6 +28,10 @@ namespace ReverseMyBudget.Persistence.Sql
                     // import them again and corrupt the data
                     b.HasIndex(i => new { i.UserId, i.DateLocal, i.Amount, i.Description })
                         .IsUnique();
+
+                    b.HasOne(x => x.Account)
+                    .WithMany()
+                    .HasForeignKey(x => x.AccountId);
                 });
         }
     }

@@ -71,6 +71,7 @@ namespace ReverseMyBudget
 
             // Scoped
             services.TryAddScoped<ITransactionStore, SqlTransactionStore>();
+            services.TryAddScoped<IAccountStore, SqlAccountStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
