@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import authService from "../api-authorization/AuthorizeService";
 import DateFormat from "../shared/formatters/DateFormat";
 import Currency from "../shared/formatters/Currency";
+import "./Transactions.css";
 
 export interface ITransactionsProps {}
 
@@ -50,8 +51,8 @@ export class Transactions extends Component<
           <tr>
             <th>Date</th>
             <th>Description</th>
-            <th>Amount</th>
-            <th>Balance</th>
+            <th className="right-align">Amount</th>
+            <th className="right-align">Balance</th>
             <th>Duplicate?</th>
           </tr>
         </thead>
@@ -60,8 +61,8 @@ export class Transactions extends Component<
             <tr key={item.Id}>
               <td>{DateFormat(item.DateLocal)}</td>
               <td>{item.Description}</td>
-              <td>{Currency(item.Amount)}</td>
-              <td>{Currency(item.Balance)}</td>
+              <td className="right-align">{Currency(item.Amount)}</td>
+              <td className="right-align">{Currency(item.Balance)}</td>
               <td>{item.IsDuplicate}</td>
             </tr>
           ))}
