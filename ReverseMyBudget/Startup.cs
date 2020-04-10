@@ -52,6 +52,10 @@ namespace ReverseMyBudget
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<LoggingExceptionFilter>();
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;   // Can receive camel case or Pascal case
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;  // Don't change from Pascal case
             });
 
             services.AddRazorPages();
