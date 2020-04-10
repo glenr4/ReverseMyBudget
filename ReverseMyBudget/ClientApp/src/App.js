@@ -14,6 +14,9 @@ import "./custom.css";
 export default class App extends Component {
   static displayName = App.name;
 
+  // Note: if this app and the API are hosted on the same server, then the route paths here
+  // must be different to the API paths, otherwise on browser refresh, the browser will
+  // call directly to the API and will get a 401 response.
   render() {
     return (
       <Layout>
@@ -24,7 +27,7 @@ export default class App extends Component {
           path="/upload-transactions"
           component={UploadTransactions}
         />
-        <AuthorizeRoute path="/transactions" component={Transactions} />
+        <AuthorizeRoute path="/get-transactions" component={Transactions} />
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}

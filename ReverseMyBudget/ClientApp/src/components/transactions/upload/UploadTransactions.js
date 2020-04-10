@@ -95,7 +95,7 @@ export class UploadTransactions extends Component {
       .catch((reason) => {
         console.log(reason);
 
-        alert("There was an error during upload, please try again later");
+        alert("There was an error, please try again later");
 
         this.setState({ successfullUploaded: false, uploading: false });
       });
@@ -137,7 +137,7 @@ export class UploadTransactions extends Component {
       // TODO redirect to the Transactions view
     } else {
       console.log("error");
-      alert("There was an error during upload, please try again later");
+      alert("There was an error, please try again later");
 
       this.setState({ successfullUploaded: false, uploading: false });
     }

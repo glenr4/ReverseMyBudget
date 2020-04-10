@@ -10,14 +10,10 @@ export interface ITransactionsState {
   Data: ReverseMyBudget.ITransaction[];
 }
 
-// export class OwnersApp extends React.Component<IOwnersAppProps, IOwnersAppState> {
-
 export class Transactions extends Component<
   ITransactionsProps,
   ITransactionsState
 > {
-  // static displayName = FetchData.name;
-
   constructor(props: ITransactionsProps) {
     super(props);
     this.state = {
@@ -48,7 +44,6 @@ export class Transactions extends Component<
   }
 
   renderTable = (data: ReverseMyBudget.ITransaction[]) => {
-    debugger;
     return (
       <table className="table table-striped" aria-labelledby="tabelLabel">
         <thead>
@@ -76,7 +71,6 @@ export class Transactions extends Component<
   };
 
   getData = async () => {
-    debugger;
     const token = await authService.getAccessToken();
 
     const options: RequestInit = {
@@ -101,7 +95,6 @@ export class Transactions extends Component<
 
   processResponse = async (response: Response) => {
     if (response.status < 400) {
-      debugger;
       const transactions = await response.json();
 
       console.log("successful");
@@ -113,7 +106,7 @@ export class Transactions extends Component<
       // TODO redirect to the Transactions view
     } else {
       console.log("error");
-      alert("There was an error during upload, please try again later");
+      alert("There was an error, please try again later");
     }
     this.setState({ Loading: false });
   };
