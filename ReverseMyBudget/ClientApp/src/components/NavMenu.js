@@ -64,7 +64,11 @@ export class NavMenu extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/upload">
+                  <NavLink
+                    tag={Link}
+                    className="text-dark"
+                    to="/upload-transactions"
+                  >
                     Upload Transactions
                   </NavLink>
                 </NavItem>

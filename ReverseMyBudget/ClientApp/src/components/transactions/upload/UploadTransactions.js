@@ -1,12 +1,12 @@
 // This component is from: https://malcoded.com/posts/react-file-upload/
 import React, { Component } from "react";
-import Dropzone from "./Dropzone";
-import Progress from "./Progress";
-import { Dropdown } from "../shared/Dropdown";
-import "./Upload.css";
-import authService from "../api-authorization/AuthorizeService";
+import Dropzone from "../../shared/upload/Dropzone";
+import Progress from "../../shared/upload/Progress";
+import { Dropdown } from "../../shared/Dropdown";
+import "./UploadTransactions.css";
+import authService from "../../api-authorization/AuthorizeService";
 
-export class Upload extends Component {
+export class UploadTransactions extends Component {
   constructor(props) {
     super(props);
 
@@ -72,10 +72,10 @@ export class Upload extends Component {
 
     this.setState({ uploadProgress: {}, uploading: true });
 
-    await this.fetchSendFile(this.state.file);
+    await this.sendFile(this.state.file);
   };
 
-  fetchSendFile = async (file) => {
+  sendFile = async (file) => {
     const formData = new FormData();
     formData.append("file", file, file.name);
     const token = await authService.getAccessToken();

@@ -7,7 +7,7 @@ import { Counter } from "./components/Counter";
 import AuthorizeRoute from "./components/api-authorization/AuthorizeRoute";
 import ApiAuthorizationRoutes from "./components/api-authorization/ApiAuthorizationRoutes";
 import { ApplicationPaths } from "./components/api-authorization/ApiAuthorizationConstants";
-import { Upload } from "./components/upload/Upload";
+import { UploadTransactions } from "./components/transactions/upload/UploadTransactions";
 import "./custom.css";
 
 export default class App extends Component {
@@ -19,7 +19,10 @@ export default class App extends Component {
         <Route exact path="/" component={Home} />
         <Route path="/counter" component={Counter} />
         <AuthorizeRoute path="/fetch-data" component={FetchData} />
-        <AuthorizeRoute path="/upload" component={Upload} />
+        <AuthorizeRoute
+          path="/upload-transactions"
+          component={UploadTransactions}
+        />
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}
