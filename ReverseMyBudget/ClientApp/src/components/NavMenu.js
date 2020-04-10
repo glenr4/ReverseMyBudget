@@ -72,6 +72,11 @@ export class NavMenu extends Component {
                     Upload Transactions
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/transactions">
+                    Transactions
+                  </NavLink>
+                </NavItem>
                 <LoginMenu></LoginMenu>
               </ul>
             </Collapse>

@@ -8,6 +8,7 @@ import AuthorizeRoute from "./components/api-authorization/AuthorizeRoute";
 import ApiAuthorizationRoutes from "./components/api-authorization/ApiAuthorizationRoutes";
 import { ApplicationPaths } from "./components/api-authorization/ApiAuthorizationConstants";
 import { UploadTransactions } from "./components/transactions/upload/UploadTransactions";
+import { Transactions } from "./components/transactions/Transactions";
 import "./custom.css";
 
 export default class App extends Component {
@@ -23,6 +24,7 @@ export default class App extends Component {
           path="/upload-transactions"
           component={UploadTransactions}
         />
+        <AuthorizeRoute path="/transactions" component={Transactions} />
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}
