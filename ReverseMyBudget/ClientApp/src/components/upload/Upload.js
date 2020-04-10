@@ -11,7 +11,7 @@ export class Upload extends Component {
     super(props);
 
     this.state = {
-      files: [],
+      file: "",
       uploading: false,
       uploadProgress: {},
       successfullUploaded: false,
@@ -36,17 +36,25 @@ export class Upload extends Component {
               />
             </div>
             <div className="Files">
-              {this.state.files.map((file) => {
-                return (
-                  <div key={file.name} className="Row">
-                    <span className="Filename">{file.name}</span>
-                    {this.renderProgress(file)}
-                  </div>
-                );
-              })}
+              {/* {this.state.files.map((file) => {
+                return ( */}
+              <div key={this.state.file.name} className="Row">
+                <span className="Filename">{this.state.file.name}</span>
+                {this.renderProgress(this.state.file)}
+              </div>
+              {/* );
+              })} */}
             </div>
           </div>
-          <div className="Actions">{this.renderActions()}</div>
+          {/* <div className="Actions">{this.renderActions()}</div> */}
+          <div className="Actions">
+            <button
+              disabled={!this.state.file || this.state.uploading}
+              onClick={this.uploadFiles}
+            >
+              Upload
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -54,7 +62,7 @@ export class Upload extends Component {
 
   onFilesAdded = (files) => {
     this.setState((prevState) => ({
-      files: prevState.files.concat(files),
+      file: files[0],
     }));
   };
 
@@ -64,27 +72,67 @@ export class Upload extends Component {
       return;
     }
 
-    if (this.state.files.length === 0) {
+    if (!this.state.file) {
       alert("Please select a file first");
       return;
     }
 
     this.setState({ uploadProgress: {}, uploading: true });
-    const promises = [];
-    this.state.files.forEach((file) => {
-      promises.push(this.sendRequest(file));
-    });
-    try {
-      await Promise.all(promises);
-      debugger;
-      // TODO: this always returns successful even when the server returns an error
-      this.setState({ successfullUploaded: true, uploading: false });
-    } catch (e) {
-      // Not Production ready! Do some error handling here instead...
-      debugger;
-      // This never gets hit
-      this.setState({ successfullUploaded: false, uploading: false });
-    }
+    // const promises = [];
+    // this.state.files.forEach((file) => {
+    //   promises.push(this.sendRequest(file));
+    // });
+
+    // try {
+    // this.sendRequest(file);
+
+    // await Promise.all(promises);
+    debugger;
+    await this.fetchSendFile(this.state.file);
+    // TODO: this always returns successful even when the server returns an error
+    // this.setState({ successfullUploaded: true, uploading: false });
+    // } catch (e) {
+    //   // Not Production ready! Do some error handling here instead...
+    //   debugger;
+    //   // This never gets hit
+    //   this.setState({ successfullUploaded: false, uploading: false });
+    // }
+  };
+
+  fetchSendFile = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+    const token = await authService.getAccessToken();
+
+    const options = {
+      method: "POST",
+      body: formData,
+      headers: !token ? {} : { Authorization: `Bearer ${token}` },
+    };
+
+    // const response = await fetch(
+    //   `transactions/import/${this.state.selectedAccountId}`,
+    //   options
+    // );
+
+    await fetch(`transactions/import/${this.state.selectedAccountId}`, options)
+      .then((response) => {
+        debugger;
+        console.log(response);
+        this.processResponse(response);
+        // return response.json();
+      })
+      // .then((data) => {
+      //   debugger;
+
+      //   console.log(data);
+      //   this.setState({ successfullUploaded: true, uploading: false });
+      // })
+      .catch((reason) => {
+        debugger;
+        console.log(reason);
+        this.setState({ successfullUploaded: false, uploading: false });
+      });
   };
 
   sendRequest = (file) => {
@@ -152,32 +200,43 @@ export class Upload extends Component {
     }
   };
 
-  renderActions = () => {
-    if (this.state.successfullUploaded) {
-      // TODO: Redirect to Transactions page
-      alert("Transactions imported successfully");
-      return (
-        <button
-          onClick={() => {
-            this.setState({ files: [], successfullUploaded: false });
-          }}
-        >
-          Clear
-        </button>
-      );
-    } else {
-      return (
-        <button
-          disabled={this.state.files.length < 0 || this.state.uploading}
-          onClick={this.uploadFiles}
-        >
-          Upload
-        </button>
-      );
-    }
-  };
+  // renderActions = () => {
+  //   if (this.state.successfullUploaded) {
+  //     // TODO: Redirect to Transactions page
+  //     alert("Transactions imported successfully");
+  //     return (
+  //       <button
+  //         onClick={() => {
+  //           this.setState({ file: "", successfullUploaded: false });
+  //         }}
+  //       >
+  //         Clear
+  //       </button>
+  //     );
+  //   } else {
+  //     return (
+  //       <button
+  //         disabled={!this.state.file || this.state.uploading}
+  //         onClick={this.uploadFiles}
+  //       >
+  //         Upload
+  //       </button>
+  //     );
+  //   }
+  // };
 
   accountSelected = (id) => {
     this.setState({ selectedAccountId: id });
+  };
+
+  processResponse = (response) => {
+    debugger;
+    if (response.status < 400) {
+      console.log("successful");
+      this.setState({ successfullUploaded: true, uploading: false, file: "" });
+    } else {
+      console.log("error");
+      this.setState({ successfullUploaded: false, uploading: false });
+    }
   };
 }
