@@ -39,27 +39,29 @@ export class Transactions extends Component<
 
     return (
       <div>
-        <h1 id="tabelLabel">Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
+        <h1 id="tabelLabel">Transactions</h1>
         {contents}
       </div>
     );
   }
 
   renderTable = (data: ReverseMyBudget.ITransaction[]) => {
+    debugger;
     return (
       <table className="table table-striped" aria-labelledby="tabelLabel">
         <thead>
           <tr>
             <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Balance</th>
+            <th>Duplicate?</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
-            <tr key={item.DateLocal}>
+            <tr key={item.Id}>
+              <td>{item.DateLocal}</td>
               <td>{item.Description}</td>
               <td>{item.Amount}</td>
               <td>{item.Balance}</td>
@@ -95,15 +97,15 @@ export class Transactions extends Component<
       });
   };
 
-  processResponse = (response: Response) => {
+  processResponse = async (response: Response) => {
     if (response.status < 400) {
       debugger;
-      const transactions = response.json();
+      const transactions = await response.json();
 
       console.log("successful");
       this.setState({
         Loading: false,
-        // Data: transactions,
+        Data: transactions,
       });
 
       // TODO redirect to the Transactions view
