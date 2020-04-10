@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import authService from "../api-authorization/AuthorizeService";
+import DateFormat from "../shared/formatters/DateFormat";
+import Currency from "../shared/formatters/Currency";
 
 export interface ITransactionsProps {}
 
@@ -61,10 +63,10 @@ export class Transactions extends Component<
         <tbody>
           {data.map((item) => (
             <tr key={item.Id}>
-              <td>{item.DateLocal}</td>
+              <td>{DateFormat(item.DateLocal)}</td>
               <td>{item.Description}</td>
-              <td>{item.Amount}</td>
-              <td>{item.Balance}</td>
+              <td>{Currency(item.Amount)}</td>
+              <td>{Currency(item.Balance)}</td>
               <td>{item.IsDuplicate}</td>
             </tr>
           ))}
