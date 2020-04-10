@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using ReverseMyBudget.Application;
 using ReverseMyBudget.Domain;
 using ReverseMyBudget.Persistence;
+using ReverseMyBudget.Persistence.Sql;
 using Serilog;
 
 namespace ReverseMyBudget.Controllers
@@ -26,9 +27,13 @@ namespace ReverseMyBudget.Controllers
         }
 
         [HttpGet]
-        public Task<List<Transaction>> Get([FromServices] ITransactionStore transactionStore)
+        public async Task<IActionResult> Get(
+            [FromQuery] TransactionQueryParameters parameters,
+            [FromServices] ITransactionStore transactionStore)
         {
-            return transactionStore.Get(_userProvider.UserId);
+            var result = await transactionStore.Get(_userProvider.UserId, parameters);
+
+            return Ok(result);
         }
 
         [HttpPost("import/{accountId}")]

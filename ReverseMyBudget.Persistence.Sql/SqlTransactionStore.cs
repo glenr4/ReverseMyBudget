@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ReverseMyBudget.Domain;
+﻿using ReverseMyBudget.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +15,15 @@ namespace ReverseMyBudget.Persistence.Sql
             _ctx = ctx;
         }
 
-        public Task<List<Transaction>> Get(Guid userId)
+        // TODO: need to add filtering as IQueryable
+        public Task<PagedList<Transaction>> Get(Guid userId, TransactionQueryParameters parameters)
         {
-            return _ctx.Transaction.Where(t => t.UserId == userId).ToListAsync();
+            return PagedList<Transaction>.ToPagedListAsync(
+                this.FindAll<Transaction>(),
+                parameters.PageNumber,
+                parameters.PageSize);
+
+            //return _ctx.Transaction.Where(t => t.UserId == userId).ToListAsync();
         }
 
         public Task AddAsync(IEnumerable<Transaction> transactions)
@@ -26,6 +31,11 @@ namespace ReverseMyBudget.Persistence.Sql
             _ctx.Transaction.AddRange(transactions);
 
             return _ctx.SaveChangesAsync();
+        }
+
+        public IQueryable<T> FindAll<T>() where T : class
+        {
+            return _ctx.Set<T>();
         }
     }
 }

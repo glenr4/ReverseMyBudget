@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReverseMyBudget.Domain\ReverseMyBudget.Domain.csproj" />
+    <ProjectReference Include="..\ReverseMyBudget.Persistence.Sql\ReverseMyBudget.Persistence.Sql.csproj" />
     <ProjectReference Include="..\ReverseMyBudget.Persistence\ReverseMyBudget.Persistence.csproj" />
   </ItemGroup>
 
