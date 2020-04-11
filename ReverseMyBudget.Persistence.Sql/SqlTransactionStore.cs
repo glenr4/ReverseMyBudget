@@ -1,4 +1,5 @@
-﻿using ReverseMyBudget.Domain;
+﻿using LinqKit;
+using ReverseMyBudget.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,19 @@ namespace ReverseMyBudget.Persistence.Sql
         }
 
         // TODO: need to add filtering as IQueryable
-        public Task<PagedList<Transaction>> Get(Guid userId, TransactionQueryParameters parameters)
+        public async Task<PagedList<Transaction>> Get(Guid userId, TransactionQueryParameters parameters)
         {
-            return PagedList<Transaction>.ToPagedListAsync(
+            var predicate = PredicateBuilder.New<Transaction>(true);
+            predicate = predicate.And(t => t.UserId == userId);
+            predicate = predicate.And(t => t.Description.Contains("Coles"));
+
+            var result = await PagedList<Transaction>.ToPagedListAsync(
                 this.FindAll<Transaction>(),
+                predicate,
                 parameters.PageNumber,
                 parameters.PageSize);
 
+            return result;
             //return _ctx.Transaction.Where(t => t.UserId == userId).ToListAsync();
         }
 

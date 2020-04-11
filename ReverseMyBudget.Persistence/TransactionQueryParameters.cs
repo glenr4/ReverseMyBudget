@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ReverseMyBudget.Persistence
 {
-    public class TransactionQueryParameters : PagingParameters
+    public class TransactionQueryParameters : PagingQueryParameters
     {
     }
 }

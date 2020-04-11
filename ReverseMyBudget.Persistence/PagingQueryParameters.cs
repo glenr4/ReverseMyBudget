@@ -1,6 +1,6 @@
 ﻿namespace ReverseMyBudget.Persistence
 {
-    public abstract class PagingParameters
+    public abstract class PagingQueryParameters
     {
         private const int maxPageSize = 50;
         public int PageNumber { get; set; } = 1;
