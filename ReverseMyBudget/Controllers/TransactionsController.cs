@@ -25,7 +25,7 @@ namespace ReverseMyBudget.Controllers
         {
             var result = await transactionStore.Get(parameters);
 
-            return Ok(result);
+            return this.PagedOk(result);
         }
 
         [HttpPost("import/{accountId}")]
