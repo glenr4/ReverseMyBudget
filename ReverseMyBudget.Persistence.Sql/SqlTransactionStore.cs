@@ -1,5 +1,6 @@
 ﻿using ReverseMyBudget.Domain;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReverseMyBudget.Persistence.Sql
@@ -13,7 +14,7 @@ namespace ReverseMyBudget.Persistence.Sql
         public Task<PagedList<Transaction>> Get(TransactionQueryParameters parameters)
         {
             return PagedList<Transaction>.ToPagedListAsync(
-                QueryAll<Transaction>().CreatePredicate(parameters),
+                QueryAll<Transaction>().CreatePredicate(parameters).OrderByDescending(o => o.DateLocal),
                 parameters.PageNumber,
                 parameters.PageSize);
         }
