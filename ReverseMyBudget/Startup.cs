@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using ReverseMyBudget.Application;
 using ReverseMyBudget.Data;
 using ReverseMyBudget.Models;
@@ -18,17 +19,31 @@ namespace ReverseMyBudget
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+
+        private ILoggerFactory _sqlLoggerFactory;
+
+        public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
-        }
 
-        public IConfiguration Configuration { get; }
+            if (env.IsDevelopment())
+            {
+                _sqlLoggerFactory = LoggerFactory.Create(builder =>
+                {
+                    builder.AddFilter((category, level) =>
+                                category == DbLoggerCategory.Database.Command.Name
+                                && level == LogLevel.Information)
+                            .AddConsole()   // when running from command prompt
+                            .AddDebug();    // when debugging from VS
+                });
+            }
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ILogger>(Log.Logger);
+            services.AddSingleton(Log.Logger);
 
             services.AddDbContext<ApplicationUserDbContext>(options =>
                 options.UseSqlServer(
@@ -36,9 +51,12 @@ namespace ReverseMyBudget
 
             // https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/providers?tabs=dotnet-core-cli
             services.AddDbContext<ReverseMyBudgetDbContext>(options =>
+            {
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("ReverseMyBudget")));
+                    b => b.MigrationsAssembly("ReverseMyBudget"));
+                options.UseLoggerFactory(_sqlLoggerFactory);
+            });
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationUserDbContext>();
