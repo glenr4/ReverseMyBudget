@@ -3,12 +3,15 @@ import authService from "../api-authorization/AuthorizeService";
 import DateFormat from "../shared/formatters/DateFormat";
 import Currency from "../shared/formatters/Currency";
 import "./Transactions.css";
+import GetResponseHeader from "../shared/GetResponseHeader";
 
 export interface ITransactionsProps {}
 
 export interface ITransactionsState {
   Loading: boolean;
   Data: ReverseMyBudget.ITransaction[];
+  TotalCount: number;
+  TotalPages: number;
 }
 
 export class Transactions extends Component<
@@ -20,6 +23,8 @@ export class Transactions extends Component<
     this.state = {
       Data: [],
       Loading: true,
+      TotalCount: 0,
+      TotalPages: 0,
     };
   }
 
@@ -79,10 +84,7 @@ export class Transactions extends Component<
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
     };
 
-    await fetch(
-      `transactions?description=coles&datelocal.startdate=2020-03-17`,
-      options
-    )
+    await fetch(`transactions`, options)
       .then((response: Response) => {
         console.log(response);
 
@@ -101,13 +103,17 @@ export class Transactions extends Component<
     if (response.status < 400) {
       const transactions = await response.json();
 
+      const pageData: ReverseMyBudget.IPageData = JSON.parse(
+        GetResponseHeader(response, "x-pagination")
+      );
+
       console.log("successful");
       this.setState({
         Loading: false,
         Data: transactions,
+        TotalCount: pageData.TotalCount,
+        TotalPages: pageData.TotalPages,
       });
-
-      // TODO redirect to the Transactions view
     } else {
       console.log("error");
       alert("There was an error, please try again later");
