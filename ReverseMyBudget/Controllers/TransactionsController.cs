@@ -1,28 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using ReverseMyBudget.Application;
-using ReverseMyBudget.Domain;
 using ReverseMyBudget.Persistence;
 using ReverseMyBudget.Persistence.Sql;
-using Serilog;
+using System;
+using System.Threading.Tasks;
 
 namespace ReverseMyBudget.Controllers
 {
     public class TransactionsController : AuthoriseControllerBase
     {
-        private readonly IUserProvider _userProvider;
         private readonly IMediator _mediator;
 
-        public TransactionsController(IUserProvider userProvider, IMediator mediator)
+        public TransactionsController(IMediator mediator)
         {
-            _userProvider = userProvider;
             _mediator = mediator;
         }
 
@@ -31,7 +23,7 @@ namespace ReverseMyBudget.Controllers
             [FromQuery] TransactionQueryParameters parameters,
             [FromServices] ITransactionStore transactionStore)
         {
-            var result = await transactionStore.Get(_userProvider.UserId, parameters);
+            var result = await transactionStore.Get(parameters);
 
             return Ok(result);
         }

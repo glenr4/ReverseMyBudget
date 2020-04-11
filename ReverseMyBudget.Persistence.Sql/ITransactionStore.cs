@@ -1,5 +1,4 @@
 ﻿using ReverseMyBudget.Domain;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +8,6 @@ namespace ReverseMyBudget.Persistence.Sql
     {
         Task AddAsync(IEnumerable<Transaction> transactions);
 
-        Task<PagedList<Transaction>> Get(Guid userId, TransactionQueryParameters parameters);
+        Task<PagedList<Transaction>> Get(TransactionQueryParameters parameters);
     }
 }
