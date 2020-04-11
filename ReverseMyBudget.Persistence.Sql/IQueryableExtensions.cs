@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
 
@@ -22,6 +23,38 @@ namespace ReverseMyBudget.Persistence.Sql
                     }
                 }
 
+                // GUID equal
+                if (property.PropertyType == typeof(Guid))
+                {
+                    var value = (Guid)property.GetValue(parameters);
+                    if (value != default(Guid))   // only query if property has a value
+                    {
+                        var query = $"q => q.{property.Name} == @0";
+
+                        queryable = queryable.Where(query, value);
+                    }
+                }
+
+                // GUID? equal
+                if (property.PropertyType == typeof(Guid?))
+                {
+                    var value = property.GetValue(parameters);
+                    if (value != default)   // only query if property has a value
+                    {
+                        string query;
+                        if ((Guid)value == Guid.Empty)
+                        {
+                            query = $"q => q.{property.Name} == null";
+                            queryable = queryable.Where(query);
+                        }
+                        else
+                        {
+                            query = $"q => q.{property.Name} == @0";
+                            queryable = queryable.Where(query, value);
+                        }
+                    }
+                }
+
                 // >= StartDate  or <= EndDate
                 if (property.PropertyType == typeof(DateRange))
                 {
@@ -29,11 +62,13 @@ namespace ReverseMyBudget.Persistence.Sql
                     if (value?.StartDate != default)   // only query if property has a value
                     {
                         string query = $"q => q.{property.Name} >= @0";
+
                         queryable = queryable.Where(query, value.StartDate);
                     }
                     if (value?.EndDate != default)   // only query if property has a value
                     {
                         string query = $"q => q.{property.Name} <= @0";
+
                         queryable = queryable.Where(query, value.EndDate);
                     }
                 }
