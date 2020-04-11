@@ -79,7 +79,10 @@ export class Transactions extends Component<
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
     };
 
-    await fetch(`transactions`, options)
+    await fetch(
+      `transactions?description=coles&datelocal.startdate=2020-03-17`,
+      options
+    )
       .then((response: Response) => {
         console.log(response);
 
