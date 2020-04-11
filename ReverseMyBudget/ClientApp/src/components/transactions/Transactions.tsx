@@ -4,6 +4,7 @@ import DateFormat from "../shared/formatters/DateFormat";
 import Currency from "../shared/formatters/Currency";
 import "./Transactions.css";
 import GetResponseHeader from "../shared/GetResponseHeader";
+import Pagination from "react-js-pagination";
 
 export interface ITransactionsProps {}
 
@@ -12,6 +13,8 @@ export interface ITransactionsState {
   Data: ReverseMyBudget.ITransaction[];
   TotalCount: number;
   TotalPages: number;
+  CurrentPage: number;
+  PageSize: number;
 }
 
 export class Transactions extends Component<
@@ -25,11 +28,13 @@ export class Transactions extends Component<
       Loading: true,
       TotalCount: 0,
       TotalPages: 0,
+      CurrentPage: 0,
+      PageSize: 0,
     };
   }
 
   componentDidMount() {
-    this.getData();
+    this.getData(1);
   }
 
   render() {
@@ -38,7 +43,19 @@ export class Transactions extends Component<
         <em>Loading...</em>
       </p>
     ) : (
-      this.renderTable(this.state.Data)
+      <div>
+        {this.renderTable(this.state.Data)}
+        <Pagination
+          activePage={this.state.CurrentPage}
+          itemsCountPerPage={this.state.PageSize}
+          totalItemsCount={this.state.TotalCount}
+          pageRangeDisplayed={5}
+          itemClass={"page-item"}
+          linkClass={"page-link"}
+          activeClass={"page-item active"}
+          onChange={this.getData}
+        />
+      </div>
     );
 
     return (
@@ -76,7 +93,7 @@ export class Transactions extends Component<
     );
   };
 
-  getData = async () => {
+  getData = async (pageNumber: number) => {
     const token = await authService.getAccessToken();
 
     const options: RequestInit = {
@@ -84,7 +101,7 @@ export class Transactions extends Component<
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
     };
 
-    await fetch(`transactions`, options)
+    await fetch(`transactions?PageSize=10&PageNumber=${pageNumber}`, options)
       .then((response: Response) => {
         console.log(response);
 
@@ -113,6 +130,8 @@ export class Transactions extends Component<
         Data: transactions,
         TotalCount: pageData.TotalCount,
         TotalPages: pageData.TotalPages,
+        CurrentPage: pageData.CurrentPage,
+        PageSize: pageData.PageSize,
       });
     } else {
       console.log("error");
