@@ -6,6 +6,10 @@ import "./Transactions.css";
 import GetResponseHeader from "../shared/GetResponseHeader";
 import Pagination from "react-js-pagination";
 import SearchBar from "../shared/SearchBase";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 export interface ITransactionsProps {}
 
@@ -15,6 +19,7 @@ export interface ITransactionsState {
   TotalCount: number;
   CurrentPage: number;
   PageSize: number;
+  StartDate?: Date;
 }
 
 export class Transactions extends Component<
@@ -60,13 +65,24 @@ export class Transactions extends Component<
     );
 
     return (
-      <div>
+      <div className={"glyphicon glyphicon-menu-right"}>
         <h1 id="tabelLabel">Transactions</h1>
         <SearchBar onChange={this.filterDescription} />
+        <DatePicker
+          selected={this.state.StartDate}
+          onChange={this.setStartDate}
+          name="startDate"
+          dateFormat="dd/MM/yyyy"
+        />
         {contents}
       </div>
     );
   }
+
+  setStartDate = (date: Date) => {
+    console.log(date);
+    this.setState({ StartDate: date });
+  };
 
   renderTable = (data: ReverseMyBudget.ITransaction[]) => {
     return (
