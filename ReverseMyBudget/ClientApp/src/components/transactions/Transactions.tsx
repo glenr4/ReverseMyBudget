@@ -20,6 +20,7 @@ export interface ITransactionsState {
   CurrentPage: number;
   PageSize: number;
   StartDate?: Date;
+  EndDate?: Date;
 }
 
 export class Transactions extends Component<
@@ -68,11 +69,21 @@ export class Transactions extends Component<
       <div className={"glyphicon glyphicon-menu-right"}>
         <h1 id="tabelLabel">Transactions</h1>
         <SearchBar onChange={this.filterDescription} />
+        <label className="Label">Start Date:</label>
         <DatePicker
           selected={this.state.StartDate}
           onChange={this.setStartDate}
           name="startDate"
           dateFormat="dd/MM/yyyy"
+          className="Label"
+        />
+        <label className="Label">End Date:</label>
+        <DatePicker
+          selected={this.state.EndDate}
+          onChange={this.setEndDate}
+          name="endDate"
+          dateFormat="dd/MM/yyyy"
+          className="Label"
         />
         {contents}
       </div>
@@ -82,6 +93,11 @@ export class Transactions extends Component<
   setStartDate = (date: Date) => {
     console.log(date);
     this.setState({ StartDate: date });
+  };
+
+  setEndDate = (date: Date) => {
+    console.log(date);
+    this.setState({ EndDate: date });
   };
 
   renderTable = (data: ReverseMyBudget.ITransaction[]) => {
