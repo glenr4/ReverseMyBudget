@@ -5,6 +5,7 @@ import Currency from "../shared/formatters/Currency";
 import "./Transactions.css";
 import GetResponseHeader from "../shared/GetResponseHeader";
 import Pagination from "react-js-pagination";
+import SearchBar from "../shared/SearchBase";
 
 export interface ITransactionsProps {}
 
@@ -61,6 +62,7 @@ export class Transactions extends Component<
     return (
       <div>
         <h1 id="tabelLabel">Transactions</h1>
+        <SearchBar onChange={this.filterDescription} />
         {contents}
       </div>
     );
@@ -93,7 +95,11 @@ export class Transactions extends Component<
     );
   };
 
-  getData = async (pageNumber: number) => {
+  getData = async (pageNumber: number, filter?: string) => {
+    if (!filter) {
+      filter = "";
+    }
+
     const token = await authService.getAccessToken();
 
     const options: RequestInit = {
@@ -101,7 +107,10 @@ export class Transactions extends Component<
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
     };
 
-    await fetch(`transactions?PageSize=10&PageNumber=${pageNumber}`, options)
+    await fetch(
+      `transactions?PageSize=10&PageNumber=${pageNumber}&${filter}`,
+      options
+    )
       .then((response: Response) => {
         console.log(response);
 
@@ -137,5 +146,9 @@ export class Transactions extends Component<
       alert("There was an error, please try again later");
     }
     this.setState({ Loading: false });
+  };
+
+  filterDescription = (filter: string) => {
+    this.getData(1, `description=${filter}`);
   };
 }
