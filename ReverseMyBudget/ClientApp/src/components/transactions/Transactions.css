@@ -2,6 +2,7 @@
   text-align: right;
 }
 
+/* Matches Bootstrap: form-control */
 .DayPickerInput > input {
   display: block;
   width: 100%;

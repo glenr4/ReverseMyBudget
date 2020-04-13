@@ -6,7 +6,6 @@ import "./Transactions.css";
 import GetResponseHeader from "../shared/GetResponseHeader";
 import Pagination from "react-js-pagination";
 import SearchBar from "../shared/SearchBar";
-import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 
@@ -78,6 +77,7 @@ export class Transactions extends Component<
                 <DayPickerInput
                   onDayChange={this.setStartDate}
                   placeholder={"Start Date"}
+                  formatDate={this.formatDate}
                 />
               </div>
             </div>
@@ -87,6 +87,10 @@ export class Transactions extends Component<
       </div>
     );
   }
+
+  formatDate = (date: any): string => {
+    return DateFormat(date);
+  };
 
   setStartDate = (date: Date) => {
     console.log(date);
