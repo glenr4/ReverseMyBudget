@@ -1,6 +1,6 @@
 // This component is from: https://www.carlrippon.com/react-drop-down-data-binding/
 import React, { Component } from "react";
-import authService from "../api-authorization/AuthorizeService";
+import authService from "../../api-authorization/AuthorizeService";
 import "./Dropdown.css";
 
 export class Dropdown extends Component {

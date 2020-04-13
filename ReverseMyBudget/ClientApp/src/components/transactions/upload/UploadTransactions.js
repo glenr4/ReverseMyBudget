@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import Dropzone from "../../shared/upload/Dropzone";
 import Progress from "../../shared/upload/Progress";
-import { Dropdown } from "../../shared/Dropdown";
+import { Dropdown } from "../../shared/dropdown/Dropdown";
 import "./UploadTransactions.css";
 import authService from "../../api-authorization/AuthorizeService";
 

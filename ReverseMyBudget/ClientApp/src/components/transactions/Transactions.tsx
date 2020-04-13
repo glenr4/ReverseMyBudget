@@ -6,10 +6,10 @@ import GetResponseHeader from "../shared/GetResponseHeader";
 import Pagination from "react-js-pagination";
 import SearchBar from "../shared/SearchBar";
 import "react-day-picker/lib/style.css";
-import DayPickerInput from "react-day-picker/DayPickerInput";
 import DateFormat, {
   DateFormatIso8601,
 } from "./../shared/formatters/DateFormat";
+import DatePicker from "../shared/datePicker/DatePicker";
 
 export interface ITransactionsProps {}
 
@@ -72,18 +72,10 @@ export class Transactions extends Component<
           <div className="col">
             <SearchBar onChange={this.setDescription} />
           </div>
-          <div className="col">
-            <div className="input-group mb-3">
-              <div className="input-group-prepend">
-                <span className="input-group-text fa fa-search" />
-                <DayPickerInput
-                  onDayChange={this.setStartDate}
-                  placeholder={"Start Date"}
-                  formatDate={DateFormat}
-                />
-              </div>
-            </div>
-          </div>
+          <DatePicker
+            placeholder={"Start Date"}
+            onDateChange={this.setStartDate}
+          />
           {contents}
         </div>
       </div>
@@ -124,16 +116,17 @@ export class Transactions extends Component<
   setStartDate = (date: Date) => {
     this.setState({ StartDate: date });
     this.filterStartDate = date && DateFormatIso8601(date);
+
     this.getData(this.state.CurrentPage);
   };
 
   setDescription = (description: string) => {
     this.filterDescription = description;
+
     this.getData(this.state.CurrentPage);
   };
 
   buildFilter = () => {
-    debugger;
     let filter = "";
 
     if (this.filterDescription) {
