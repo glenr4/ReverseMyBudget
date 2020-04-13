@@ -10,6 +10,7 @@ import DateFormat, {
   DateFormatIso8601,
 } from "./../shared/formatters/DateFormat";
 import DatePicker from "../shared/datePicker/DatePicker";
+import moment from "moment";
 
 export interface ITransactionsProps {}
 
@@ -134,6 +135,12 @@ export class Transactions extends Component<
     this.filterStartDate = date && DateFormatIso8601(date);
 
     this.getData(this.state.CurrentPage);
+
+    if (this.state.EndDate && date) {
+      if (moment(date).isAfter(this.state.EndDate)) {
+        alert("End date must be after start date");
+      }
+    }
   };
 
   setEndDate = (date: Date) => {
@@ -141,6 +148,12 @@ export class Transactions extends Component<
     this.filterEndDate = date && DateFormatIso8601(date);
 
     this.getData(this.state.CurrentPage);
+
+    if (this.state.StartDate && date) {
+      if (moment(this.state.StartDate).isAfter(date)) {
+        alert("End date must be after start date");
+      }
+    }
   };
 
   buildFilter = () => {
