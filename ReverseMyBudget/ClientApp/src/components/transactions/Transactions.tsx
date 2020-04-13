@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import authService from "../api-authorization/AuthorizeService";
-import DateFormat from "../shared/formatters/DateFormat";
 import Currency from "../shared/formatters/Currency";
 import "./Transactions.css";
 import GetResponseHeader from "../shared/GetResponseHeader";
@@ -8,6 +7,9 @@ import Pagination from "react-js-pagination";
 import SearchBar from "../shared/SearchBar";
 import "react-day-picker/lib/style.css";
 import DayPickerInput from "react-day-picker/DayPickerInput";
+import DateFormat, {
+  DateFormatIso8601,
+} from "./../shared/formatters/DateFormat";
 
 export interface ITransactionsProps {}
 
@@ -68,7 +70,7 @@ export class Transactions extends Component<
         <h1 id="tabelLabel">Transactions</h1>
         <div className="row">
           <div className="col">
-            <SearchBar onChange={this.filterDescription} />
+            <SearchBar onChange={this.setDescription} />
           </div>
           <div className="col">
             <div className="input-group mb-3">
@@ -77,7 +79,7 @@ export class Transactions extends Component<
                 <DayPickerInput
                   onDayChange={this.setStartDate}
                   placeholder={"Start Date"}
-                  formatDate={this.formatDate}
+                  formatDate={DateFormat}
                 />
               </div>
             </div>
@@ -87,20 +89,6 @@ export class Transactions extends Component<
       </div>
     );
   }
-
-  formatDate = (date: any): string => {
-    return DateFormat(date);
-  };
-
-  setStartDate = (date: Date) => {
-    console.log(date);
-    this.setState({ StartDate: date });
-  };
-
-  setEndDate = (date: Date) => {
-    console.log(date);
-    this.setState({ EndDate: date });
-  };
 
   renderTable = (data: ReverseMyBudget.ITransaction[]) => {
     return (
@@ -129,10 +117,38 @@ export class Transactions extends Component<
     );
   };
 
-  getData = async (pageNumber: number, filter?: string) => {
-    if (!filter) {
-      filter = "";
+  filterDescription: string = "";
+  filterStartDate: string = "";
+  filterEndDate: string = "";
+
+  setStartDate = (date: Date) => {
+    this.setState({ StartDate: date });
+    this.filterStartDate = date && DateFormatIso8601(date);
+    this.getData(this.state.CurrentPage);
+  };
+
+  setDescription = (description: string) => {
+    this.filterDescription = description;
+    this.getData(this.state.CurrentPage);
+  };
+
+  buildFilter = () => {
+    debugger;
+    let filter = "";
+
+    if (this.filterDescription) {
+      filter += `Description=${this.filterDescription}&`;
     }
+
+    if (this.filterStartDate) {
+      filter += `DateLocal.StartDate=${this.filterStartDate}&`;
+    }
+
+    return filter;
+  };
+
+  getData = async (pageNumber: number) => {
+    const filter = this.buildFilter();
 
     const token = await authService.getAccessToken();
 
@@ -180,9 +196,5 @@ export class Transactions extends Component<
       alert("There was an error, please try again later");
     }
     this.setState({ Loading: false });
-  };
-
-  filterDescription = (filter: string) => {
-    this.getData(1, `description=${filter}`);
   };
 }
