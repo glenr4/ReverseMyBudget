@@ -13,16 +13,14 @@ export interface IDatePickerState {}
 class DatePicker extends React.Component<IDatePickerProps, IDatePickerState> {
   render() {
     return (
-      <div className="col">
-        <div className="input-group mb-3">
-          <div className="input-group-prepend">
-            <span className="input-group-text fa fa-search" />
-            <DayPickerInput
-              onDayChange={this.props.onDateChange}
-              placeholder={this.props.placeholder}
-              formatDate={DateFormat}
-            />
-          </div>
+      <div className="input-group mb-3">
+        <div className="input-group-prepend">
+          <span className="input-group-text fa fa-search" />
+          <DayPickerInput
+            onDayChange={this.props.onDateChange}
+            placeholder={this.props.placeholder}
+            formatDate={DateFormat}
+          />
         </div>
       </div>
     );

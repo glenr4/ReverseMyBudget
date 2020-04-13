@@ -68,15 +68,25 @@ export class Transactions extends Component<
     return (
       <div className={"glyphicon glyphicon-menu-right"}>
         <h1 id="tabelLabel">Transactions</h1>
-        <div className="row">
-          <div className="col">
-            <SearchBar onChange={this.setDescription} />
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <SearchBar onChange={this.setDescription} />
+            </div>
+            <div className="col-4 col-lg-3">
+              <DatePicker
+                placeholder={"Start Date"}
+                onDateChange={this.setStartDate}
+              />
+            </div>
+            <div className="col-4  col-lg-3">
+              <DatePicker
+                placeholder={"End Date"}
+                onDateChange={this.setEndDate}
+              />
+            </div>
+            {contents}
           </div>
-          <DatePicker
-            placeholder={"Start Date"}
-            onDateChange={this.setStartDate}
-          />
-          {contents}
         </div>
       </div>
     );
@@ -113,6 +123,12 @@ export class Transactions extends Component<
   filterStartDate: string = "";
   filterEndDate: string = "";
 
+  setDescription = (description: string) => {
+    this.filterDescription = description;
+
+    this.getData(this.state.CurrentPage);
+  };
+
   setStartDate = (date: Date) => {
     this.setState({ StartDate: date });
     this.filterStartDate = date && DateFormatIso8601(date);
@@ -120,8 +136,9 @@ export class Transactions extends Component<
     this.getData(this.state.CurrentPage);
   };
 
-  setDescription = (description: string) => {
-    this.filterDescription = description;
+  setEndDate = (date: Date) => {
+    this.setState({ EndDate: date });
+    this.filterEndDate = date && DateFormatIso8601(date);
 
     this.getData(this.state.CurrentPage);
   };
@@ -135,6 +152,10 @@ export class Transactions extends Component<
 
     if (this.filterStartDate) {
       filter += `DateLocal.StartDate=${this.filterStartDate}&`;
+    }
+
+    if (this.filterEndDate) {
+      filter += `DateLocal.EndDate=${this.filterEndDate}&`;
     }
 
     return filter;
