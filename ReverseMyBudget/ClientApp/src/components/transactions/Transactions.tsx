@@ -5,11 +5,10 @@ import Currency from "../shared/formatters/Currency";
 import "./Transactions.css";
 import GetResponseHeader from "../shared/GetResponseHeader";
 import Pagination from "react-js-pagination";
-import SearchBar from "../shared/SearchBase";
-import DatePicker from "react-datepicker";
-import moment from "moment";
-
-import "react-datepicker/dist/react-datepicker.css";
+import SearchBar from "../shared/SearchBar";
+import DayPicker from "react-day-picker";
+import "react-day-picker/lib/style.css";
+import DayPickerInput from "react-day-picker/DayPickerInput";
 
 export interface ITransactionsProps {}
 
@@ -68,24 +67,23 @@ export class Transactions extends Component<
     return (
       <div className={"glyphicon glyphicon-menu-right"}>
         <h1 id="tabelLabel">Transactions</h1>
-        <SearchBar onChange={this.filterDescription} />
-        <label className="Label">Start Date:</label>
-        <DatePicker
-          selected={this.state.StartDate}
-          onChange={this.setStartDate}
-          name="startDate"
-          dateFormat="dd/MM/yyyy"
-          className="Label"
-        />
-        <label className="Label">End Date:</label>
-        <DatePicker
-          selected={this.state.EndDate}
-          onChange={this.setEndDate}
-          name="endDate"
-          dateFormat="dd/MM/yyyy"
-          className="Label"
-        />
-        {contents}
+        <div className="row">
+          <div className="col">
+            <SearchBar onChange={this.filterDescription} />
+          </div>
+          <div className="col">
+            <div className="input-group mb-3">
+              <div className="input-group-prepend">
+                <span className="input-group-text fa fa-search" />
+                <DayPickerInput
+                  onDayChange={this.setStartDate}
+                  placeholder={"Start Date"}
+                />
+              </div>
+            </div>
+          </div>
+          {contents}
+        </div>
       </div>
     );
   }
