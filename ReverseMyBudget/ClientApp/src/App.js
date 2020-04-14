@@ -7,19 +7,27 @@ import { Counter } from "./components/Counter";
 import AuthorizeRoute from "./components/api-authorization/AuthorizeRoute";
 import ApiAuthorizationRoutes from "./components/api-authorization/ApiAuthorizationRoutes";
 import { ApplicationPaths } from "./components/api-authorization/ApiAuthorizationConstants";
-import { Upload } from "./components/upload/Upload";
+import { UploadTransactions } from "./components/transactions/upload/UploadTransactions";
+import { Transactions } from "./components/transactions/Transactions";
 import "./custom.css";
 
 export default class App extends Component {
   static displayName = App.name;
 
+  // Note: if this app and the API are hosted on the same server, then the route paths here
+  // must be different to the API paths, otherwise on browser refresh, the browser will
+  // call directly to the API and will get a 401 response.
   render() {
     return (
       <Layout>
         <Route exact path="/" component={Home} />
         <Route path="/counter" component={Counter} />
         <AuthorizeRoute path="/fetch-data" component={FetchData} />
-        <AuthorizeRoute path="/upload" component={Upload} />
+        <AuthorizeRoute
+          path="/upload-transactions"
+          component={UploadTransactions}
+        />
+        <AuthorizeRoute path="/get-transactions" component={Transactions} />
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}

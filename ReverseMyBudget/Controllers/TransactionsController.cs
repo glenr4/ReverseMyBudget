@@ -1,26 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using ReverseMyBudget.Application;
-using Serilog;
+using ReverseMyBudget.Persistence;
+using ReverseMyBudget.Persistence.Sql;
+using System;
+using System.Threading.Tasks;
 
 namespace ReverseMyBudget.Controllers
 {
     public class TransactionsController : AuthoriseControllerBase
     {
-        private readonly ILogger _logger;
         private readonly IMediator _mediator;
 
-        public TransactionsController(ILogger logger, IMediator mediator)
+        public TransactionsController(IMediator mediator)
         {
-            _logger = logger;
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(
+            [FromQuery] TransactionQueryParameters parameters,
+            [FromServices] ITransactionStore transactionStore)
+        {
+            var result = await transactionStore.Get(parameters);
+
+            return this.PagedOk(result);
         }
 
         [HttpPost("import/{accountId}")]
@@ -31,6 +36,9 @@ namespace ReverseMyBudget.Controllers
                 throw new ArgumentException("Missing file");
             }
 
+            // TODO: should the endpoint take responsibility for getting the UserId
+            // and then the Mediator Request just gets it as a parameter or should
+            // the Mediator Request get it?
             await _mediator.Send(new ImportTransactionsRequest
             {
                 AccountId = accountId,

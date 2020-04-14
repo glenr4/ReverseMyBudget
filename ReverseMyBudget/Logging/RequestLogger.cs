@@ -15,7 +15,7 @@ namespace ReverseMyBudget
         private readonly ILogger _logger;
 
         // If using Application Insights, then remove UserId and TraceId as they will be included in 'customDimensions'
-        private readonly string _messageTemplate = "{requestMethod} {requestPath} from {RemoteIP} => {statusCode} in {responseTime:0.000} ms UserId: {UserId} TraceId: {TraceId}";
+        private readonly string _messageTemplate = "{requestMethod} {requestPath}{queryString} from {RemoteIP} => {statusCode} in {responseTime:0.000} ms UserId: {UserId} TraceId: {TraceId}";
 
         public RequestLogger(RequestDelegate next, ILogger logger)
         {
@@ -43,7 +43,7 @@ namespace ReverseMyBudget
                         : statusCode >= 400 ? LogEventLevel.Warning
                         : LogEventLevel.Debug;
 
-                    _logger.Write(level, _messageTemplate, httpContext.Request.Method, httpContext.Request.Path, httpContext.Connection.RemoteIpAddress, statusCode, sw.Elapsed.TotalMilliseconds);
+                    _logger.Write(level, _messageTemplate, httpContext.Request.Method, httpContext.Request.Path, httpContext.Request.QueryString, httpContext.Connection.RemoteIpAddress, statusCode, sw.Elapsed.TotalMilliseconds);
                 }
                 catch (Exception ex)
                 {
