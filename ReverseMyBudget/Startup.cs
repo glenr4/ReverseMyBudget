@@ -23,6 +23,7 @@ namespace ReverseMyBudget
         public IConfiguration Configuration { get; }
 
         private ILoggerFactory _sqlLoggerFactory;
+        private bool _useTestUser = false;
 
         public Startup(IConfiguration configuration, IHostEnvironment env)
         {
@@ -38,6 +39,8 @@ namespace ReverseMyBudget
                             .AddConsole()   // when running from command prompt
                             .AddDebug();    // when debugging from VS
                 });
+
+                _useTestUser = Configuration.GetValue<bool>("UseTestUser");
             }
         }
 
@@ -85,6 +88,14 @@ namespace ReverseMyBudget
                 configuration.RootPath = "ClientApp/build";
             });
 
+            if (!_useTestUser)
+            {
+                services.AddOidcUserProvider();
+            }
+            else
+            {
+                services.AddTestUserProvider();
+            }
 
             // Application Services
             services.AddMediatR(typeof(ImportTransactionsRequest).Assembly);
