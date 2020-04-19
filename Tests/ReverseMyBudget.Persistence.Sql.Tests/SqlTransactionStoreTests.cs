@@ -1,7 +1,9 @@
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using ReverseMyBudget.Domain;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -11,10 +13,12 @@ namespace ReverseMyBudget.Persistence.Sql.Tests
     public class SqlTransactionStoreTests
     {
         private Fixture _fixture;
+        private Guid _userId;
 
         public SqlTransactionStoreTests()
         {
             _fixture = new Fixture();
+            _userId = Guid.NewGuid();
         }
 
         [Fact]
@@ -49,10 +53,14 @@ namespace ReverseMyBudget.Persistence.Sql.Tests
 
         private ReverseMyBudgetDbContext CreateDbContext()
         {
+            var userProvider = new Mock<IUserProvider>();
+            userProvider.Setup(u => u.UserId).Returns(_userId);
+
             return new ReverseMyBudgetDbContext(
                         new DbContextOptionsBuilder<ReverseMyBudgetDbContext>()
                             .UseInMemoryDatabase(databaseName: "TestDB")
-                            .Options);
+                            .Options,
+                        userProvider.Object);
         }
     }
 }

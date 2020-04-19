@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReverseMyBudget.Application\ReverseMyBudget.Application.csproj" />
+    <ProjectReference Include="..\ReverseMyBudget.MLCategorisation\ReverseMyBudget.MLCategorisation.csproj" />
     <ProjectReference Include="..\ReverseMyBudget.Persistence.Sql\ReverseMyBudget.Persistence.Sql.csproj" />
   </ItemGroup>
 

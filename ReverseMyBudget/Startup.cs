@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ReverseMyBudget.Application;
 using ReverseMyBudget.Data;
+using ReverseMyBudget.MLCategorisation;
 using ReverseMyBudget.Models;
 using ReverseMyBudget.Persistence;
 using ReverseMyBudget.Persistence.Sql;
@@ -84,12 +85,12 @@ namespace ReverseMyBudget
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddOidcUserProvider();
 
             // Application Services
             services.AddMediatR(typeof(ImportTransactionsRequest).Assembly);
 
             services.TryAddSingleton<ITransactionConverter, NabCsvToTransactionConverter>();
+            services.TryAddSingleton<ITransactionCategoriser, MLTransactionCategoriser>();
 
             // Scoped
             services.TryAddScoped<ITransactionStore, SqlTransactionStore>();
@@ -123,6 +124,7 @@ namespace ReverseMyBudget
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

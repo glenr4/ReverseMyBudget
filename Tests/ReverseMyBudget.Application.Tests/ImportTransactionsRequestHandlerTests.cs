@@ -2,7 +2,7 @@ using AutoFixture;
 using FluentAssertions;
 using Moq;
 using ReverseMyBudget.Domain;
-using ReverseMyBudget.Persistence;
+using ReverseMyBudget.Persistence.Sql;
 using Serilog;
 using System;
 using System.Collections.Generic;

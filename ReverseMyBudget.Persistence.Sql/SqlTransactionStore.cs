@@ -11,7 +11,7 @@ namespace ReverseMyBudget.Persistence.Sql
         {
         }
 
-        public Task<PagedList<Transaction>> Get(TransactionQueryParameters parameters)
+        public Task<PagedList<Transaction>> GetAsync(TransactionQueryParameters parameters)
         {
             return PagedList<Transaction>.ToPagedListAsync(
                 QueryAll<Transaction>().CreatePredicate(parameters).OrderByDescending(o => o.DateLocal),
