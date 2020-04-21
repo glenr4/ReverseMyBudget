@@ -11,8 +11,9 @@ namespace ReverseMyBudget.Persistence.Sql
     {
         private readonly IUserProvider _userProvider;
 
-        public DbSet<Transaction> Transaction { get; set; }
         public DbSet<Account> Account { get; set; }
+        public DbSet<Transaction> Transaction { get; set; }
+        public DbSet<TransactionStaging> TransactionStaging { get; set; }
 
         public ReverseMyBudgetDbContext(
             DbContextOptions<ReverseMyBudgetDbContext> options,
@@ -32,13 +33,28 @@ namespace ReverseMyBudget.Persistence.Sql
                 {
                     // In case the transactions have already been imported, we don't want to
                     // import them again and corrupt the data
-                    b.HasIndex(i => new { i.UserId, i.DateLocal, i.Amount, i.Description })
-                        .IsUnique();
+                    // However, this will reject all transacations, even if only one is duplicated
+                    //b.HasIndex(i => new { i.UserId, i.DateLocal, i.Amount, i.Description })
+                    //    .IsUnique();
 
                     b.HasOne(x => x.Account)
                     .WithMany()
                     .HasForeignKey(x => x.AccountId);
 
+                    // Always filter by UserId
+                    b.HasQueryFilter(e => _userProvider.UserId == e.UserId);
+                });
+
+            modelBuilder
+                .Entity<TransactionStaging>(b =>
+                {
+                    // Always filter by UserId
+                    b.HasQueryFilter(e => _userProvider.UserId == e.UserId);
+                });
+
+            modelBuilder
+                .Entity<Account>(b =>
+                {
                     // Always filter by UserId
                     b.HasQueryFilter(e => _userProvider.UserId == e.UserId);
                 });

@@ -1,4 +1,5 @@
 ﻿using ReverseMyBudget.Domain;
+using ReverseMyBudget.Persistence.Sql;
 using Serilog;
 using System;
 
@@ -16,7 +17,7 @@ namespace ReverseMyBudget.Application
             _logger = logger;
         }
 
-        public Transaction Convert(Guid userId, Guid accountId, string line)
+        public TransactionStaging Convert(Guid userId, Guid accountId, string line)
         {
             try
             {
@@ -24,7 +25,7 @@ namespace ReverseMyBudget.Application
 
                 this.CheckIfHeadings(data);
 
-                return new Transaction
+                return new TransactionStaging
                 {
                     Id = Guid.NewGuid(),
                     DateLocal = System.Convert.ToDateTime(data[0]),

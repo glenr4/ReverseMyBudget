@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using ReverseMyBudget.Domain;
-using ReverseMyBudget.Persistence;
 using ReverseMyBudget.Persistence.Sql;
 using Serilog;
 using System;
@@ -19,18 +18,18 @@ namespace ReverseMyBudget.Application
 
         public class Handler : IRequestHandler<ImportTransactionsRequest, int>
         {
-            private readonly ITransactionStore _transactionStore;
+            private readonly ITransactionStagingStore _transactionStagingStore;
             private readonly ITransactionConverter _transactionConverter;
             private readonly IUserProvider _userProvider;
             private readonly ILogger _logger;
 
             public Handler(
-                ITransactionStore transactionStore,
+                ITransactionStagingStore transactionStagingStore,
                 ITransactionConverter transactionConverter,
                 IUserProvider userProvider,
                 ILogger logger)
             {
-                _transactionStore = transactionStore;
+                _transactionStagingStore = transactionStagingStore;
                 _transactionConverter = transactionConverter;
                 _userProvider = userProvider;
                 _logger = logger;
@@ -40,9 +39,9 @@ namespace ReverseMyBudget.Application
             {
                 _logger.Information("{@request}", request);
 
-                var transactions = new List<Transaction>();
+                var transactions = new List<TransactionStaging>();
                 string line = "";
-                int lineCount = 0;
+                int lineCount = 1;
 
                 using (StreamReader sr = new StreamReader(request.File))
                 {
@@ -52,13 +51,17 @@ namespace ReverseMyBudget.Application
 
                         if (transaction != null)
                         {
-                            transactions.Add(transaction);
+                            transaction.ImportOrder = lineCount;
                             lineCount++;
+
+                            transactions.Add(transaction);
                         }
                     }
                 }
 
-                await _transactionStore.AddAsync(transactions);
+                await _transactionStagingStore.AddAsync(transactions);
+
+                // TODO need to call Stored Procedure
 
                 return lineCount;
             }

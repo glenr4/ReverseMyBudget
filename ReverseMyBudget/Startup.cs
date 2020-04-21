@@ -93,6 +93,7 @@ namespace ReverseMyBudget
 
             // Scoped
             services.TryAddScoped<ITransactionStore, SqlTransactionStore>();
+            services.TryAddScoped<ITransactionStagingStore, SqlTransactionStagingStore>();
             services.TryAddScoped<IAccountStore, SqlAccountStore>();
         }
 
