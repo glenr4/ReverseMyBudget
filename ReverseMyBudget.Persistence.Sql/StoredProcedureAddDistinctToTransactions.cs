@@ -4,29 +4,23 @@ namespace ReverseMyBudget.Persistence.Sql
 {
     public class StoredProcedureAddDistinctToTransactions
     {
+        public static string Name { get; set; } = "[dbo].[sp_AddDistinctToTransactions]";
+
         public void Create(MigrationBuilder migrationBuilder)
         {
-            var sp = @"-- Inserts all new records from TransactionStaging to Transaction for a User
+            var sp = $@"-- Inserts all new records from TransactionStaging to Transaction for a User
 -- ie if it already exists in Transaction table then it will be ignored
 -- Used to maintain the data integrity of the Transaction table
 
-CREATE PROCEDURE [dbo].[sp_AddDistinctToTransactions]
+CREATE PROCEDURE {Name}
 	@UserId uniqueidentifier,
 	@RowCount int Output	-- returns the number of rows inserted
 AS
 BEGIN
 
 INSERT INTO [dbo].[Transaction]
-           ([UserId]
-		   ,[DateLocal]
-           ,[Amount]
-           ,[Type]
-           ,[Description]
-           ,[Balance]
-		   ,[AccountId]
-		   ,[ImportOrder])
-(
-	select [UserId]
+           ([Id]
+           ,[UserId]
 		   ,[DateLocal]
            ,[Amount]
            ,[Type]
@@ -34,6 +28,18 @@ INSERT INTO [dbo].[Transaction]
            ,[Balance]
 		   ,[AccountId]
 		   ,[ImportOrder]
+           ,[IsDuplicate])
+(
+	select [Id]
+            ,[UserId]
+		   ,[DateLocal]
+           ,[Amount]
+           ,[Type]
+           ,[Description]
+           ,[Balance]
+		   ,[AccountId]
+		   ,[ImportOrder]
+           ,0
 	from [dbo].[TransactionStaging] AS ts
 	WHERE UserId = @UserId
 		AND NOT EXISTS
@@ -65,7 +71,7 @@ GO
 
         public void Drop(MigrationBuilder migrationBuilder)
         {
-            var sp = @"DROP PROCEDURE [dbo].[sp_AddDistinctToTransactions]
+            var sp = $@"DROP PROCEDURE {Name};
 GO";
 
             migrationBuilder.Sql(sp);

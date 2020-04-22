@@ -61,8 +61,6 @@ namespace ReverseMyBudget.Application
 
                 await _transactionStagingStore.AddAsync(transactions);
 
-                // TODO need to call Stored Procedure
-
                 return lineCount;
             }
         }

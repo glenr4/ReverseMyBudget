@@ -31,12 +31,6 @@ namespace ReverseMyBudget.Persistence.Sql
             modelBuilder
                 .Entity<Transaction>(b =>
                 {
-                    // In case the transactions have already been imported, we don't want to
-                    // import them again and corrupt the data
-                    // However, this will reject all transacations, even if only one is duplicated
-                    //b.HasIndex(i => new { i.UserId, i.DateLocal, i.Amount, i.Description })
-                    //    .IsUnique();
-
                     b.HasOne(x => x.Account)
                     .WithMany()
                     .HasForeignKey(x => x.AccountId);
