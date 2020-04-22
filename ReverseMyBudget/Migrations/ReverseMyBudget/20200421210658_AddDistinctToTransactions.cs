@@ -7,14 +7,14 @@ namespace ReverseMyBudget.Migrations.ReverseMyBudget
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var storedProcedure = new StoredProcedureAddDistinctToTransactions();
+            var storedProcedure = new SpAddDistinctToTransactions();
 
             storedProcedure.Create(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            var storedProcedure = new StoredProcedureAddDistinctToTransactions();
+            var storedProcedure = new SpAddDistinctToTransactions();
 
             storedProcedure.Drop(migrationBuilder);
         }

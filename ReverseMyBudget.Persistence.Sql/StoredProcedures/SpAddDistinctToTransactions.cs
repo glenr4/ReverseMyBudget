@@ -2,9 +2,11 @@
 
 namespace ReverseMyBudget.Persistence.Sql
 {
-    public class StoredProcedureAddDistinctToTransactions
+    public class SpAddDistinctToTransactions
     {
-        public static string Name { get; set; } = "[dbo].[sp_AddDistinctToTransactions]";
+        public static string Name { get; } = "[dbo].[sp_AddDistinctToTransactions]";
+        public static string UserIdParam { get; } = "UserId";
+        public static string RowCountOutputParam { get; } = "RowCount";
 
         public void Create(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +15,8 @@ namespace ReverseMyBudget.Persistence.Sql
 -- Used to maintain the data integrity of the Transaction table
 
 CREATE PROCEDURE {Name}
-	@UserId uniqueidentifier,
-	@RowCount int Output	-- returns the number of rows inserted
+	@{UserIdParam} uniqueidentifier,
+	@{RowCountOutputParam} int Output	-- returns the number of rows inserted
 AS
 BEGIN
 
