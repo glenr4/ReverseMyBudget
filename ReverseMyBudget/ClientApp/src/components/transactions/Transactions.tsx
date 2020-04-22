@@ -86,9 +86,7 @@ export class Transactions extends Component<
                 onDateChange={this.setEndDate}
               />
             </div>
-            <div className="row">
-              <div className="col">{contents}</div>
-            </div>
+            {contents}
           </div>
         </div>
       </div>
