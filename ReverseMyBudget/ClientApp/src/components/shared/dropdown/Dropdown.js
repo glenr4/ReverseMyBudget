@@ -21,7 +21,7 @@ export class Dropdown extends Component {
         // Need to put this call in the parent component and use API Context, so that this
         // can stay generic
         let items = data.map((item) => {
-          return { value: item.Id, display: item.Type };
+          return { value: item.id, display: item.type };
         });
         this.setState({
           items: [

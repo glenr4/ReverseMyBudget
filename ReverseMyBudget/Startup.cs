@@ -14,6 +14,7 @@ using ReverseMyBudget.Models;
 using ReverseMyBudget.Persistence;
 using ReverseMyBudget.Persistence.Sql;
 using Serilog;
+using System.Text.Json;
 
 namespace ReverseMyBudget
 {
@@ -73,7 +74,7 @@ namespace ReverseMyBudget
             }).AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;   // Can receive camel case or Pascal case
-                options.JsonSerializerOptions.PropertyNamingPolicy = null;  // Don't change from Pascal case
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;  // UI uses camel case
             });
 
             services.AddRazorPages();
