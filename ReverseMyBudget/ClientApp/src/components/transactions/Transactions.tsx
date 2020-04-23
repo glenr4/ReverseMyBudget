@@ -40,7 +40,7 @@ export class Transactions extends Component<
   }
 
   componentDidMount() {
-    this.getData(1);
+    this.getData();
   }
 
   render() {
@@ -127,14 +127,14 @@ export class Transactions extends Component<
   setDescription = (description: string) => {
     this.filterDescription = description;
 
-    this.getData(this.state.currentPage);
+    this.getData();
   };
 
   setStartDate = (date: Date) => {
     this.setState({ startDate: date });
     this.filterStartDate = date && DateFormatIso8601(date);
 
-    this.getData(this.state.currentPage);
+    this.getData();
 
     if (this.state.endDate && date) {
       if (moment(date).isAfter(this.state.endDate)) {
@@ -147,7 +147,7 @@ export class Transactions extends Component<
     this.setState({ endDate: date });
     this.filterEndDate = date && DateFormatIso8601(date);
 
-    this.getData(this.state.currentPage);
+    this.getData();
 
     if (this.state.startDate && date) {
       if (moment(this.state.startDate).isAfter(date)) {
@@ -174,7 +174,7 @@ export class Transactions extends Component<
     return filter;
   };
 
-  getData = async (pageNumber: number) => {
+  getData = async () => {
     const filter = this.buildFilter();
 
     const token = await authService.getAccessToken();
@@ -184,10 +184,7 @@ export class Transactions extends Component<
       headers: !token ? {} : { Authorization: `Bearer ${token}` },
     };
 
-    await fetch(
-      `transactions?PageSize=10&PageNumber=${pageNumber}&${filter}`,
-      options
-    )
+    await fetch(`transactions?PageSize=10&PageNumber=1&${filter}`, options)
       .then((response: Response) => {
         console.log(response);
 
