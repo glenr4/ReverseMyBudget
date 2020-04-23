@@ -140,9 +140,7 @@ export class UploadTransactions extends Component {
         file: "",
       });
 
-      alert("Upload complete");
-
-      // TODO redirect to the Transactions view
+      this.props.history.push("/get-transactions");
     } else {
       console.log("error");
       alert("There was an error, please try again later");
