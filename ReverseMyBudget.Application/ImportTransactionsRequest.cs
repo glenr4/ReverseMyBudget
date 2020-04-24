@@ -59,9 +59,7 @@ namespace ReverseMyBudget.Application
                     }
                 }
 
-                await _transactionStagingStore.AddAsync(transactions);
-
-                return lineCount;
+                return await _transactionStagingStore.AddAsync(transactions);
             }
         }
     }

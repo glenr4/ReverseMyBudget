@@ -5,6 +5,6 @@ namespace ReverseMyBudget.Persistence.Sql
 {
     public interface ITransactionStagingStore
     {
-        Task AddAsync(IEnumerable<TransactionStaging> transactions);
+        Task<int> AddAsync(IEnumerable<TransactionStaging> transactions);
     }
 }
