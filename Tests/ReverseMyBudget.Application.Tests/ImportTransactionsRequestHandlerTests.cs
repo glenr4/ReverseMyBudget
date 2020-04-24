@@ -27,9 +27,9 @@ namespace ReverseMyBudget.Application.Tests
         {
             _transactionStagingStore = new Mock<ITransactionStagingStore>();
             _transactionConverter = new Mock<ITransactionConverter>();
-            _userProvider = new Mock<IUserProvider>();
             _logger = new Mock<ILogger>();
 
+            _userProvider = new Mock<IUserProvider>();
             _userId = Guid.NewGuid();
             _userProvider.Setup(u => u.UserId).Returns(_userId);
 
