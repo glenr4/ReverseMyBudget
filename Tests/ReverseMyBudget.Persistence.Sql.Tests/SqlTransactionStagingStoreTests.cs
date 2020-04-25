@@ -53,7 +53,7 @@ namespace ReverseMyBudget.Persistence.Sql.Tests
             // Assert
             using (var ctx = this.CreateDbContext())
             {
-                var transactionsInDb = ctx.TransactionStaging.IgnoreQueryFilters().ToList();    // Not testing Query Filter here
+                var transactionsInDb = await ctx.TransactionStaging.IgnoreQueryFilters().ToListAsync();    // Not testing Query Filter here
 
                 transactionsInDb.Should().BeEquivalentTo(transactions);
             }

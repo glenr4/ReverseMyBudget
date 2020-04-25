@@ -5,16 +5,18 @@ using System.Threading.Tasks;
 
 namespace ReverseMyBudget.Persistence.Sql
 {
-    public class SqlTransactionStagingStore : SqlStoreBase, ITransactionStagingStore
+    public class SqlTransactionStagingStore : ITransactionStagingStore
     {
+        private readonly ReverseMyBudgetDbContext _ctx;
         private readonly IAddDistinctToTransactions _addDistinctToTransactions;
         private readonly ILogger _logger;
 
         public SqlTransactionStagingStore(
             ReverseMyBudgetDbContext ctx,
             IAddDistinctToTransactions addDistinctToTransactions,
-            ILogger logger) : base(ctx)
+            ILogger logger)
         {
+            _ctx = ctx;
             _addDistinctToTransactions = addDistinctToTransactions;
             _logger = logger;
         }

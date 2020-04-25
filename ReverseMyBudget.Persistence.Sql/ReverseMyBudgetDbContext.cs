@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReverseMyBudget.Domain;
+using System.Linq;
 
 namespace ReverseMyBudget.Persistence.Sql
 {
@@ -52,6 +53,16 @@ namespace ReverseMyBudget.Persistence.Sql
                     // Always filter by UserId
                     b.HasQueryFilter(e => _userProvider.UserId == e.UserId);
                 });
+        }
+
+        /// <summary>
+        /// All of the entities in the DbSet
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public IQueryable<T> QueryAll<T>() where T : class
+        {
+            return this.Set<T>();
         }
     }
 }
