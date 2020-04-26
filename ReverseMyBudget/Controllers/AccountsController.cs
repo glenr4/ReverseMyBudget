@@ -10,18 +10,16 @@ namespace ReverseMyBudget.Controllers
     public class AccountsController : AuthoriseControllerBase
     {
         private readonly IAccountStore _accountStore;
-        private readonly IUserProvider _userProvider;
 
-        public AccountsController(IAccountStore accountStore, IUserProvider userProvider)
+        public AccountsController(IAccountStore accountStore)
         {
             _accountStore = accountStore;
-            _userProvider = userProvider;
         }
 
         [HttpGet]
         public Task<List<Account>> Get()
         {
-            return _accountStore.GetUsersAccountsAsync(_userProvider.UserId);
+            return _accountStore.GetAsync();
         }
 
         /// <summary>

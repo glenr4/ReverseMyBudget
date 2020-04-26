@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReverseMyBudget.Domain;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReverseMyBudget.Persistence.Sql
@@ -16,9 +14,9 @@ namespace ReverseMyBudget.Persistence.Sql
             _ctx = ctx;
         }
 
-        public async Task<List<Account>> GetUsersAccountsAsync(Guid userId)
+        public async Task<List<Account>> GetAsync()
         {
-            return await _ctx.Account.Where(a => a.UserId == userId).ToListAsync();
+            return await _ctx.Account.ToListAsync();
         }
 
         public Task AddAsync(Account account)

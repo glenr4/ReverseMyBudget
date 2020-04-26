@@ -5,7 +5,6 @@ using Moq;
 using ReverseMyBudget.Domain;
 using Serilog;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,6 +16,7 @@ namespace ReverseMyBudget.Persistence.Sql.Tests
         private Mock<IUserProvider> _userProvider;
         private Mock<IAddDistinctToTransactions> _addDistinctToTransactions;
         private Mock<ILogger> _logger;
+        private string _databaseName;
 
         public SqlTransactionStagingStoreTests()
         {
@@ -27,6 +27,8 @@ namespace ReverseMyBudget.Persistence.Sql.Tests
             _addDistinctToTransactions = new Mock<IAddDistinctToTransactions>();
 
             _logger = new Mock<ILogger>();
+
+            _databaseName = _fixture.Create<string>();
         }
 
         [Fact]
@@ -80,7 +82,7 @@ namespace ReverseMyBudget.Persistence.Sql.Tests
         {
             return new ReverseMyBudgetDbContext(
                         new DbContextOptionsBuilder<ReverseMyBudgetDbContext>()
-                            .UseInMemoryDatabase(databaseName: "TestDB")
+                            .UseInMemoryDatabase(databaseName: _databaseName)
                             .Options,
                         _userProvider.Object);
         }

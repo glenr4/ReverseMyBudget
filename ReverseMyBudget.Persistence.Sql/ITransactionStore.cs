@@ -1,10 +1,11 @@
 ﻿using ReverseMyBudget.Domain;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ReverseMyBudget.Persistence.Sql
 {
     public interface ITransactionStore
     {
-        Task<PagedList<Transaction>> Get(TransactionQueryParameters parameters);
+        Task<PagedList<Transaction>> GetAsync(TransactionQueryParameters parameters);
     }
 }

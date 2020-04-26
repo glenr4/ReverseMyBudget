@@ -23,7 +23,7 @@ namespace ReverseMyBudget.Controllers
             [FromQuery] TransactionQueryParameters parameters,
             [FromServices] ITransactionStore transactionStore)
         {
-            var result = await transactionStore.Get(parameters);
+            var result = await transactionStore.GetAsync(parameters);
 
             return this.PagedOk(result);
         }
