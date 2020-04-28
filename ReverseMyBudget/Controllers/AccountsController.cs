@@ -16,6 +16,7 @@ namespace ReverseMyBudget.Controllers
             _accountStore = accountStore;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public Task<List<Account>> Get()
         {
