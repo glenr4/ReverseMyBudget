@@ -30,16 +30,11 @@ export class UploadTransactions extends Component {
             <div>
               <Dropzone
                 onFilesAdded={this.onFilesAdded}
-                disabled={
-                  this.state.uploading || this.state.successfullUploaded
-                }
+                disabled={this.state.uploading}
               />
             </div>
             <div className="Files">
-              <div key={this.state.file.name} className="Row">
-                <span className="Filename">{this.state.file.name}</span>
-                {this.renderProgress(this.state.file)}
-              </div>
+              <div className="Row">{this.renderFileList()}</div>
             </div>
           </div>
           <div className="Actions">
@@ -54,6 +49,17 @@ export class UploadTransactions extends Component {
       </div>
     );
   }
+
+  renderFileList = () => {
+    if (this.state.file) {
+      return (
+        <>
+          <span className="Filename">{this.state.file.name}</span>
+          {this.renderProgress(this.state.file)}
+        </>
+      );
+    }
+  };
 
   onFilesAdded = (files) => {
     this.setState({ file: files[0] });
@@ -103,7 +109,7 @@ export class UploadTransactions extends Component {
 
   renderProgress = (file) => {
     const uploadProgress = this.state.uploadProgress[file.name];
-    if (this.state.uploading || this.state.successfullUploaded) {
+    if (this.state.uploading) {
       return (
         <div className="ProgressWrapper">
           <Progress progress={uploadProgress ? uploadProgress.percentage : 0} />
@@ -134,7 +140,7 @@ export class UploadTransactions extends Component {
         file: "",
       });
 
-      // TODO redirect to the Transactions view
+      this.props.history.push("/get-transactions");
     } else {
       console.log("error");
       alert("There was an error, please try again later");

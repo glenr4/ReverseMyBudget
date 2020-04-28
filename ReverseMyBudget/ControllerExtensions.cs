@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using ReverseMyBudget.Persistence.Sql;
+using System.Text.Json;
 
 namespace ReverseMyBudget
 {
@@ -8,6 +8,8 @@ namespace ReverseMyBudget
     {
         public static IActionResult PagedOk<T>(this ControllerBase controller, PagedList<T> result)
         {
+            string headerName = "x-pagination";
+
             var metadata = new
             {
                 result.TotalCount,
@@ -18,7 +20,12 @@ namespace ReverseMyBudget
                 result.HasPrevious
             };
 
-            controller.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+
+            controller.Response.Headers.Add(headerName, JsonSerializer.Serialize(metadata, options));
 
             return controller.Ok(result);
         }

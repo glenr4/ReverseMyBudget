@@ -1,14 +1,14 @@
 declare namespace ReverseMyBudget {
   interface ITransaction {
-    Id: string;
-    DateLocal: string;
-    Amount: number;
-    Type: string;
-    Description: string;
-    Balance: number;
-    AccountId: string;
-    ImportOrder;
-    CategoryId: string;
-    IsDuplicate: boolean;
+    id: string;
+    dateLocal: string;
+    amount: number;
+    type: string;
+    description: string;
+    balance: number;
+    accountId: string;
+    importOrder;
+    categoryId: string;
+    isDuplicate: boolean;
   }
 }

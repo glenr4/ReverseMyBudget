@@ -1,10 +1,11 @@
 ﻿using ReverseMyBudget.Domain;
+using ReverseMyBudget.Persistence.Sql;
 using System;
 
 namespace ReverseMyBudget.Application
 {
     public interface ITransactionConverter
     {
-        Transaction Convert(Guid userId, Guid accountId, string line);
+        TransactionStaging Convert(Guid userId, Guid accountId, string line);
     }
 }

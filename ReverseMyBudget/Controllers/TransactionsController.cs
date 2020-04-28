@@ -23,7 +23,7 @@ namespace ReverseMyBudget.Controllers
             [FromQuery] TransactionQueryParameters parameters,
             [FromServices] ITransactionStore transactionStore)
         {
-            var result = await transactionStore.Get(parameters);
+            var result = await transactionStore.GetAsync(parameters);
 
             return this.PagedOk(result);
         }
@@ -36,9 +36,6 @@ namespace ReverseMyBudget.Controllers
                 throw new ArgumentException("Missing file");
             }
 
-            // TODO: should the endpoint take responsibility for getting the UserId
-            // and then the Mediator Request just gets it as a parameter or should
-            // the Mediator Request get it?
             await _mediator.Send(new ImportTransactionsRequest
             {
                 AccountId = accountId,

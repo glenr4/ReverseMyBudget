@@ -15,13 +15,13 @@ import moment from "moment";
 export interface ITransactionsProps {}
 
 export interface ITransactionsState {
-  Loading: boolean;
-  Data: ReverseMyBudget.ITransaction[];
-  TotalCount: number;
-  CurrentPage: number;
-  PageSize: number;
-  StartDate?: Date;
-  EndDate?: Date;
+  loading: boolean;
+  data: ReverseMyBudget.ITransaction[];
+  totalCount: number;
+  currentPage: number;
+  pageSize: number;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export class Transactions extends Component<
@@ -31,11 +31,11 @@ export class Transactions extends Component<
   constructor(props: ITransactionsProps) {
     super(props);
     this.state = {
-      Data: [],
-      Loading: true,
-      TotalCount: 0,
-      CurrentPage: 0,
-      PageSize: 0,
+      data: [],
+      loading: true,
+      totalCount: 0,
+      currentPage: 0,
+      pageSize: 0,
     };
   }
 
@@ -44,18 +44,18 @@ export class Transactions extends Component<
   }
 
   render() {
-    let contents = this.state.Loading ? (
+    let contents = this.state.loading ? (
       <p>
         <em>Loading...</em>
       </p>
     ) : (
       <>
-        {this.renderTable(this.state.Data)}
+        {this.renderTable(this.state.data)}
         <div className="pagination justify-content-center">
           <Pagination
-            activePage={this.state.CurrentPage}
-            itemsCountPerPage={this.state.PageSize}
-            totalItemsCount={this.state.TotalCount}
+            activePage={this.state.currentPage}
+            itemsCountPerPage={this.state.pageSize}
+            totalItemsCount={this.state.totalCount}
             pageRangeDisplayed={5}
             itemClass={"page-item"}
             linkClass={"page-link"}
@@ -86,8 +86,8 @@ export class Transactions extends Component<
                 onDateChange={this.setEndDate}
               />
             </div>
-            {contents}
           </div>
+          {contents}
         </div>
       </div>
     );
@@ -107,12 +107,12 @@ export class Transactions extends Component<
         </thead>
         <tbody>
           {data.map((item) => (
-            <tr key={item.Id}>
-              <td>{DateFormat(item.DateLocal)}</td>
-              <td>{item.Description}</td>
-              <td className="right-align">{Currency(item.Amount)}</td>
-              <td className="right-align">{Currency(item.Balance)}</td>
-              <td>{item.IsDuplicate}</td>
+            <tr key={item.id}>
+              <td>{DateFormat(item.dateLocal)}</td>
+              <td>{item.description}</td>
+              <td className="right-align">{Currency(item.amount)}</td>
+              <td className="right-align">{Currency(item.balance)}</td>
+              <td>{item.isDuplicate}</td>
             </tr>
           ))}
         </tbody>
@@ -127,30 +127,30 @@ export class Transactions extends Component<
   setDescription = (description: string) => {
     this.filterDescription = description;
 
-    this.getData(this.state.CurrentPage);
+    this.getData(1);
   };
 
   setStartDate = (date: Date) => {
-    this.setState({ StartDate: date });
+    this.setState({ startDate: date });
     this.filterStartDate = date && DateFormatIso8601(date);
 
-    this.getData(this.state.CurrentPage);
+    this.getData(1);
 
-    if (this.state.EndDate && date) {
-      if (moment(date).isAfter(this.state.EndDate)) {
+    if (this.state.endDate && date) {
+      if (moment(date).isAfter(this.state.endDate)) {
         alert("End date must be after start date");
       }
     }
   };
 
   setEndDate = (date: Date) => {
-    this.setState({ EndDate: date });
+    this.setState({ endDate: date });
     this.filterEndDate = date && DateFormatIso8601(date);
 
-    this.getData(this.state.CurrentPage);
+    this.getData(1);
 
-    if (this.state.StartDate && date) {
-      if (moment(this.state.StartDate).isAfter(date)) {
+    if (this.state.startDate && date) {
+      if (moment(this.state.startDate).isAfter(date)) {
         alert("End date must be after start date");
       }
     }
@@ -198,7 +198,7 @@ export class Transactions extends Component<
 
         alert("There was an error, please try again later");
 
-        this.setState({ Loading: false });
+        this.setState({ loading: false });
       });
   };
 
@@ -212,16 +212,16 @@ export class Transactions extends Component<
 
       console.log("successful");
       this.setState({
-        Loading: false,
-        Data: transactions,
-        TotalCount: pageData.TotalCount,
-        CurrentPage: pageData.CurrentPage,
-        PageSize: pageData.PageSize,
+        loading: false,
+        data: transactions,
+        totalCount: pageData.totalCount,
+        currentPage: pageData.currentPage,
+        pageSize: pageData.pageSize,
       });
     } else {
       console.log("error");
       alert("There was an error, please try again later");
     }
-    this.setState({ Loading: false });
+    this.setState({ loading: false });
   };
 }

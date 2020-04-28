@@ -1,10 +1,10 @@
 declare namespace ReverseMyBudget {
   interface IPageData {
-    TotalCount: number;
-    PageSize: number;
-    CurrentPage: number;
-    TotalPages: number;
-    HasNext: boolean;
-    HasPrevious: boolean;
+    totalCount: number;
+    pageSize: number;
+    currentPage: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrevious: boolean;
   }
 }

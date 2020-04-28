@@ -1,29 +1,24 @@
 ﻿using ReverseMyBudget.Domain;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReverseMyBudget.Persistence.Sql
 {
-    public class SqlTransactionStore : SqlStoreBase, ITransactionStore
+    public class SqlTransactionStore : ITransactionStore
     {
-        public SqlTransactionStore(ReverseMyBudgetDbContext ctx) : base(ctx)
+        private readonly ReverseMyBudgetDbContext _ctx;
+
+        public SqlTransactionStore(ReverseMyBudgetDbContext ctx)
         {
+            _ctx = ctx;
         }
 
-        public Task<PagedList<Transaction>> Get(TransactionQueryParameters parameters)
+        public Task<PagedList<Transaction>> GetAsync(TransactionQueryParameters parameters)
         {
             return PagedList<Transaction>.ToPagedListAsync(
-                QueryAll<Transaction>().CreatePredicate(parameters).OrderByDescending(o => o.DateLocal),
+                _ctx.QueryAll<Transaction>().CreatePredicate(parameters).OrderByDescending(o => o.DateLocal),
                 parameters.PageNumber,
                 parameters.PageSize);
-        }
-
-        public Task AddAsync(IEnumerable<Transaction> transactions)
-        {
-            _ctx.Transaction.AddRange(transactions);
-
-            return _ctx.SaveChangesAsync();
         }
     }
 }
