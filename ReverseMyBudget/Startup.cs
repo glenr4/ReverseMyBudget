@@ -24,6 +24,8 @@ namespace ReverseMyBudget
 
         private ILoggerFactory _sqlLoggerFactory;
 
+        private readonly string _devAllowSpecificOrigins = "_devAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
@@ -44,6 +46,17 @@ namespace ReverseMyBudget
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _devAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:6420", "https://localhost")
+                                          .AllowAnyHeader()
+                                          .AllowAnyMethod();
+                                  });
+            });
+
             services.AddSingleton(Log.Logger);
 
             services.AddDbContext<ApplicationUserDbContext>(options =>
@@ -122,6 +135,9 @@ namespace ReverseMyBudget
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            // Must be between UseRouting and UseEndPoints
+            app.UseCors(_devAllowSpecificOrigins);
 
             app.UseAuthentication();
             app.UseIdentityServer();
