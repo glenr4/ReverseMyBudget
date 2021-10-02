@@ -1,8 +1,11 @@
+// https://docs.microsoft.com/en-au/azure/active-directory-b2c/enable-authentication-spa-app
+// https://github.com/Azure-Samples/ms-identity-b2c-javascript-spa
+
 import * as msal from "@azure/msal-browser";
 import { msalConfig, loginRequest, tokenRequest } from "./authConfig";
 import { b2cPolicies } from "./authPolicies";
-import { apiConfig } from "./apiConfig";
-import callApi from "./callApi";
+import { apiConfig } from "../apiService/apiConfig";
+import callApi from "../apiService/callApi";
 
 // Create the main myMSALObj instance
 // configuration parameters are located at authConfig.js

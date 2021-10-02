@@ -1,5 +1,5 @@
 import { b2cPolicies } from "./authPolicies";
-import { apiConfig } from "./apiConfig";
+import { apiConfig } from "../apiService/apiConfig";
 
 /**
  * Configuration object to be passed to MSAL instance on creation.

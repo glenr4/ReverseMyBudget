@@ -1,5 +1,4 @@
 const callApi = (endpoint, token) => {
-  debugger;
   const headers = new Headers();
   const bearer = `Bearer ${token}`;
 
