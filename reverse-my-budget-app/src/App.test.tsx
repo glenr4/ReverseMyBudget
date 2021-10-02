@@ -1,9 +1,26 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+jest.mock("./auth/auth", () => {});
+jest.mock("./components/DataGrid", () => {
+  return {
+    __esModule: true,
+    default: () => <div data-testid="DataGrid" />,
+  };
+});
+
+it("Renders Sign In Button", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  const element = screen.getByRole("button", { name: /Sign In/i });
+
+  expect(element).toBeInTheDocument();
+});
+
+it("Renders DataGrid", () => {
+  render(<App />);
+
+  const element = screen.getByTestId(/DataGrid/i);
+
+  expect(element).toBeInTheDocument();
 });
