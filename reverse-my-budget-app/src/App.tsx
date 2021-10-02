@@ -1,4 +1,4 @@
-import passTokenToApi, { signIn, signOut } from "./auth/auth";
+import { callApiWithToken, signIn, signOut } from "./auth/auth";
 import DataGrid from "./components/DataGrid";
 
 const App = () => {
@@ -7,7 +7,7 @@ const App = () => {
       <div>
         <button onClick={signIn}>Sign In</button>
         <button onClick={signOut}>Sign Out</button>
-        <button onClick={passTokenToApi}>Call API</button>
+        <button onClick={callApiWithToken}>Call API</button>
       </div>
       <DataGrid />
     </>

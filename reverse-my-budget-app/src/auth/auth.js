@@ -128,7 +128,7 @@ function getTokenRedirect(request) {
       } else {
         console.log("access_token acquired at: " + new Date().toString());
         accessToken = response.accessToken;
-        passTokenToApi();
+        callApiWithToken();
       }
     })
     .catch((error) => {
@@ -145,8 +145,7 @@ function getTokenRedirect(request) {
     });
 }
 
-// Acquires and access token and then passes it to the API call
-function passTokenToApi() {
+export function callApiWithToken() {
   if (!accessToken) {
     getTokenRedirect(tokenRequest);
   } else {
@@ -157,12 +156,3 @@ function passTokenToApi() {
     }
   }
 }
-
-function editProfile() {
-  const editProfileRequest = b2cPolicies.authorities.editProfile;
-  editProfileRequest.loginHint =
-    myMSALObj.getAccountByHomeId(accountId).username;
-
-  myMSALObj.loginRedirect(editProfileRequest);
-}
-export default passTokenToApi;
