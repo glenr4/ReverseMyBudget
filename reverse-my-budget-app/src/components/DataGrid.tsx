@@ -85,7 +85,7 @@ const DataGrid = () => {
         reactUi={true}
         defaultColDef={defaultColDef}
         columnDefs={[...columns]}
-      ></AgGridReact>
+      />
     </div>
   );
 };
