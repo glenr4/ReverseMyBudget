@@ -11,22 +11,25 @@ To be useful for anyone who has been struggling to get a hold on their finances.
 There are other budgeting apps out there but of the ones I have looked at in the past, they require you to give them your bank logon details, which gives them full control over your accounts! This app does not require bank logon credentials, just download transactions as a CSV file and then upload into ReverseMyBudget.
 
 ## Current Status
-This is a work in progress. Currently CSV files from National Australia Bank (NAB) can be uploaded, duplicates ignored and displayed in a table.
+This is a work in progress. Currently CSV files from National Australia Bank (NAB) can be uploaded, duplicates ignored and displayed in a table. The user interface is still pretty basic and needs a lot of work. It currently uses the UI of the Identity Server starter project.
 
 Authentication is via Identity Server: https://identityserver4.readthedocs.io/en/latest/. However, this will be changed in future updates to Azure B2C. This will outsource the auth management to Azure and result in a more secure application with much less maintenance required.
 
 ## Initialise
-1. Open a command prompt in the ReverseMyBudget/ClientApp directory and run: yarn install (npm has proven to be unreliable in this project, so use yarn instead)
-2. If you want to use something other than SQL Express localdb for the database, then set the DefaultConnection in: appsettings.Development.json
-3. In Visual Studio, open Package Manager Console and run: 
-	Update-Database -Context ReverseMyBudgetDbContext
-	Update-Database -Context ApplicationUserDbContext
+1. Install Entity Framework Core CLI Tools: `dotnet tool install --global dotnet-ef`
+1. Open a command prompt in the ReverseMyBudget/ClientApp directory and run: `yarn install` (npm has proven to be unreliable in this project, so use yarn instead)
+1. If you want to use something other than SQL Express localdb for the database, then set the DefaultConnection in: appsettings.Development.json
+1. In ReverseMyBudget folder run: 
+
+    `dotnet ef database update --context ReverseMyBudgetDbContext`
+
+    `dotnet ef database update --context ApplicationUserDbContext`
 
 ## To run in Development mode
-1. Open a command prompt in the ReverseMyBudget/ClientApp directory and run: yarn start
-2. Open a command prompt in the ReverseMyBudget directory (where the .csproj file is) and run: dotnet watch run
+1. Open a command prompt in the ReverseMyBudget/ClientApp directory and run: `yarn start`
+1. Open a command prompt in the ReverseMyBudget directory (where the .csproj file is) and run: `dotnet watch run`
 	(or run from Visual Studio)
-3. In a browser go to: https://localhost:5001
+1. In a browser go to: https://localhost:5001
 
 ## License
 This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. http://creativecommons.org/licenses/by-nc-sa/4.0/
