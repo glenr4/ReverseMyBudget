@@ -35,23 +35,21 @@ namespace ReverseMyBudget.Persistence.Sql
                     }
                 }
 
-                // GUID? equal
+                // Nullable GUID equal
                 if (property.PropertyType == typeof(Guid?))
                 {
                     var value = property.GetValue(parameters);
-                    if (value != default)   // only query if property has a value
+
+                    string query;
+                    if (value == null)
                     {
-                        string query;
-                        if ((Guid)value == Guid.Empty)
-                        {
-                            query = $"q => q.{property.Name} == null";
-                            queryable = queryable.Where(query);
-                        }
-                        else
-                        {
-                            query = $"q => q.{property.Name} == @0";
-                            queryable = queryable.Where(query, value);
-                        }
+                        query = $"q => q.{property.Name} == null";
+                        queryable = queryable.Where(query);
+                    }
+                    else if ((Guid)value != Guid.Empty) // only query if property has a value
+                    {
+                        query = $"q => q.{property.Name} == @0";
+                        queryable = queryable.Where(query, value);
                     }
                 }
 

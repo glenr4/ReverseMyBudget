@@ -45,7 +45,6 @@ namespace ReverseMyBudget.Persistence.Sql.Tests
                 CreateTransaction(userId),
             };
 
-            // Act
             using (var ctx = this.CreateDbContext())
             {
                 ctx.AddRange(transactions);
@@ -53,19 +52,19 @@ namespace ReverseMyBudget.Persistence.Sql.Tests
                 await ctx.SaveChangesAsync();
             }
 
-            // Assert
             using (var ctx = this.CreateDbContext())
             {
                 var store = new SqlTransactionStore(ctx);
 
+                // Act
                 var queryParameters = new TransactionQueryParameters
                 {
                     PageNumber = pageNumber,
                     PageSize = 2
                 };
-
                 var result = await store.GetAsync(queryParameters);
 
+                // Assert
                 result.Should().HaveCount(queryParameters.PageSize);
                 result.CurrentPage.Should().Be(queryParameters.PageNumber);
                 result.TotalPages.Should().Be(transactions.Count / queryParameters.PageSize);
