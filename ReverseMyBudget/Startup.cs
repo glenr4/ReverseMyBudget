@@ -41,7 +41,6 @@ namespace ReverseMyBudget
             }
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton(Log.Logger);
@@ -79,7 +78,6 @@ namespace ReverseMyBudget
 
             services.AddRazorPages();
 
-            // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
@@ -99,7 +97,6 @@ namespace ReverseMyBudget
             services.TryAddScoped<IAddDistinctToTransactions, SpAddDistinctToTransactions>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<RequestLogger>();
@@ -140,8 +137,6 @@ namespace ReverseMyBudget
 
                 if (env.IsDevelopment())
                 {
-                    //spa.UseReactDevelopmentServer(npmScript: "start");
-
                     // Speed up debugging by running SPA independantly
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
